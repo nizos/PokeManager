@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Albums.qml</file>
+        <file>AlbumsView.qml</file>
+        <file>AppWindow.qml</file>
+        <file>Cards.qml</file>
+        <file>CardsView.qml</file>
+        <file>HeaderButton.qml</file>
+        <file>Home.qml</file>
+        <file>Library.qml</file>
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>SubHeaderAlbums.qml</file>
+        <file>SubHeaderAlbumsMenu.qml</file>
+        <file>SubHeaderCards.qml</file>
+        <file>SubHeaderCardsMenu.qml</file>
+        <file>SubHeaderLibrary.qml</file>
+        <file>SubHeaderLibraryMenu.qml</file>
+        <file>LoadingCard.qml</file>
+        <file>ThumbNail.qml</file>
+    </qresource>
+    <qresource prefix="/gui">
+        <file>GUI/subMenuShadow.png</file>
+        <file>GUI/titleShadow.png</file>
+        <file>GUI/busy.png</file>
+        <file>GUI/emptyCard.png</file>
+    </qresource>
+</RCC>
