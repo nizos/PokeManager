@@ -11,7 +11,9 @@
 #include <QJsonValue>
 #include <QAbstractListModel>
 #include <QEventLoop>
-#include <qnetworkaccessmanager.h>
+#include <QNetworkAccessManager>
+#include <QHash>
+#include <QSignalMapper>
 #include "mainnetworkmanager.h"
 #include "card.h"
 
@@ -30,14 +32,20 @@ public:
 signals:
     void cardAdded(const int albumMID, const QString cardMID);
     void cardUpdated(const int albumMID, const QString cardMID);
+    void mapped(QString cardMID);
+
 
 public slots:
-    void dataFromNetwork(const QByteArray data);
+    void dataFromNetwork(QByteArray data);
+    void mappedReply(QString);
 
 private:
     int cardMIDs;
     QList<Card> cards;
+    QNetworkAccessManager *m_nam;
     MainNetworkManager networkManager;
+    QSignalMapper m_mapper;
+    QHash<QString, QNetworkReply*> m_replies;
     int linearSearch(const int cardMID) const;
 };
 

@@ -11,6 +11,7 @@ class MainNetworkManager: public QObject
     Q_OBJECT
 public:
     explicit MainNetworkManager(QObject *parent = 0);
+
     void makeRequest(QString endpointRequest);
 
 signals:

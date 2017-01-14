@@ -10,6 +10,7 @@ MainNetworkManager::MainNetworkManager(QObject *parent):
             this,SIGNAL(qnamFinished()));
 }
 
+
 void MainNetworkManager::makeRequest(QString endpointRequest)
 {
     qnam->get(QNetworkRequest(QUrl(endpointRequest)));
