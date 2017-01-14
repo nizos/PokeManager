@@ -25,9 +25,11 @@ QVariant AbstractCardModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     const Card &card = cardForIndex(index);
-    if (role == CardIDRole)
+    if (role == InAlbumMIDRole)
+        return card.getInAlbumMID();
+    else if (role == CardIDRole)
         return card.getCardID();
-    if (role == CardMIDRole)
+    else if (role == CardMIDRole)
         return card.getCardMID();
     else if (role == NameRole)
         return card.getName();
@@ -53,6 +55,8 @@ QVariant AbstractCardModel::data(const QModelIndex &index, int role) const
         return card.getCondition();
     else if (role == StatusRole)
         return card.getStatus();
+    else if(role == LoadedRole)
+        return card.getLoaded();
     return QVariant();
 }
 
@@ -60,6 +64,7 @@ QVariant AbstractCardModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> AbstractCardModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
+    roles[InAlbumMIDRole] = "inAlbumMID";
     roles[CardIDRole] = "cardID";
     roles[CardMIDRole] = "cardMID";
     roles[NameRole] = "name";
@@ -74,5 +79,6 @@ QHash<int, QByteArray> AbstractCardModel::roleNames() const
     roles[SetCodeRole] = "setCode";
     roles[ConditionRole] = "condition";
     roles[StatusRole] = "status";
+    roles[LoadedRole] = "loaded";
     return roles;
 }

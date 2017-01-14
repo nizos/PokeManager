@@ -14,16 +14,28 @@ Item {
         property string cardTwo: model.cardTwoInAlbum
         property string cardThree: model.cardThreeInAlbum
         property string cardFour: model.cardFourInAlbum
+        property bool cardOneReady: model.cardOneLoaded
+        property bool cardTwoReady: model.cardTwoLoaded
+        property bool cardThreeReady: model.cardThreeLoaded
+        property bool cardFourReady: model.cardFourLoaded
 
-        function showThumbnails(totalCards)
+        function showThumbnails()
         {
+            album.totalCards = model.nrOfCards
+            album.cardOneReady = model.cardOneLoaded
+            album.cardTwoReady = model.cardTwoLoaded
+            album.cardThreeReady = model.cardThreeLoaded
+            album.cardFourReady = model.cardFourLoaded
+            thumbnail1.imageReady = model.cardOneLoaded;
+            thumbnail2.imageReady = model.cardTwoLoaded;
+            thumbnail3.imageReady = model.cardThreeLoaded;
+            thumbnail4.imageReady = model.cardFourLoaded;
             if(album.totalCards < 1)
             {
                 thumbnail1.enableThumbNail = false;
                 thumbnail2.enableThumbNail = false;
                 thumbnail3.enableThumbNail = false;
                 thumbnail4.enableThumbNail = false;
-                print("totalCards is 1: 0,0,0,0")
             }
             if(album.totalCards == 1)
             {
@@ -31,7 +43,6 @@ Item {
                 thumbnail2.enableThumbNail = false;
                 thumbnail3.enableThumbNail = false;
                 thumbnail4.enableThumbNail = false;
-                print("totalCards is 1: 1,0,0,0")
             }
             if(album.totalCards == 2)
             {
@@ -39,7 +50,6 @@ Item {
                 thumbnail2.enableThumbNail = true;
                 thumbnail3.enableThumbNail = false;
                 thumbnail4.enableThumbNail = false;
-                print("totalCards is 1: 1,1,0,0")
             }
             if(album.totalCards == 3)
             {
@@ -47,7 +57,6 @@ Item {
                 thumbnail2.enableThumbNail = true;
                 thumbnail3.enableThumbNail = true;
                 thumbnail4.enableThumbNail = false;
-                print("totalCards is 1: 1,1,1,0")
             }
             if(album.totalCards >= 4)
             {
@@ -55,11 +64,9 @@ Item {
                 thumbnail2.enableThumbNail = true;
                 thumbnail3.enableThumbNail = true;
                 thumbnail4.enableThumbNail = true;
-                print("totalCards is 1: 1,1,1,1")
             }
         }
-
-         Column {
+        Column {
             anchors.fill: parent
             width: 300
             Rectangle {
@@ -67,12 +74,12 @@ Item {
                 height: 240
                 width: 250
                 color: 'Transparent'
-
                 ThumbNail {
                     id: thumbnail1
                     imageHeight: 209
                     imageWidth: 150
                     imageSource: album.cardOne
+                    imageReady: album.cardOneReady
                     anchors.centerIn: parent
                     enableThumbNail: false
                 }
@@ -81,6 +88,7 @@ Item {
                     imageHeight: 209
                     imageWidth: 150
                     imageSource: album.cardTwo
+                    imageReady: album.cardTwoReady
                     anchors.centerIn: parent
                     enableThumbNail: false
                 }
@@ -89,6 +97,7 @@ Item {
                     imageHeight: 209
                     imageWidth: 150
                     imageSource: album.cardThree
+                    imageReady: album.cardThreeReady
                     anchors.centerIn: parent
                     enableThumbNail: false
                 }
@@ -97,10 +106,10 @@ Item {
                     imageHeight: 209
                     imageWidth: 150
                     imageSource: album.cardFour
+                    imageReady: album.cardFourReady
                     anchors.centerIn: parent
                     enableThumbNail: false
                 }
-
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
@@ -110,7 +119,7 @@ Item {
                     }
                 }
             }
-            Component.onCompleted: album.showThumbnails(model.nrOfCards)
+            Component.onCompleted: album.showThumbnails()
             Rectangle {
                 id: info
                 color: "Transparent"
@@ -144,25 +153,30 @@ Item {
                         }
                     }
                 }
-
-
             }
-
-
         }
-
-         Item {
-             Connections {
-                 target: MyModel
-                 onCardAdded:
-                 {
-                     album.totalCards = model.nrOfCards
-                     showThumbnails(album.totalCards)
-
-                 }
-             }
-         }
-
+        Item {
+            Connections {
+                target: MyModel
+                onCardAdded:
+                {
+                    album.showThumbnails();
+                }
+            }
+            Connections {
+                target: MyModel
+                onCardUpdated:
+                {
+                    album.showThumbnails();
+                }
+            }
+            Connections {
+                target: MyAlbumsModel
+                onCardUpdated:
+                {
+                    album.showThumbnails();
+                }
+            }
+        }
     }
-
 }

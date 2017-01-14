@@ -4,24 +4,27 @@ Item {
     id: thumbnail
     state: "disabled"
     property bool enableThumbNail: false
+    property bool imageReady: false
     property string imageSource
     property int imageHeight
     property int imageWidth
     property bool imageAntiAliasing: true
     property double randomAngle: Math.random() * (2 * 16 + 1) -16
+
     function showThumnail(enableThumbNail)
     {
-        if(thumbnail.enableThumbNail == false)
+        if(thumbnail.enableThumbNail == false || thumbnail.imageReady == false)
         {
             thumbnail.state = "disabled"
         }
-        if(thumbnail.enableThumbNail == true)
+        if(thumbnail.enableThumbNail == true && thumbnail.imageReady == true)
         {
             thumbnail.state = "enabled"
             thumbnailEnabled.source = thumbnail.imageSource
         }
     }
-    onStateChanged: showThumnail(enableThumbNail)
+    onEnableThumbNailChanged: thumbnail.showThumnail(thumbnail.enableThumbNail)
+    onImageReadyChanged: thumbnail.showThumnail(thumbnail.enableThumbNail)
     Image {
         id: thumbnailDisabled
         visible: true
@@ -40,7 +43,7 @@ Item {
         rotation: thumbnail.randomAngle
         anchors.centerIn: parent
     }
-    Component.onCompleted: showThumnail(enableThumbNail)
+    Component.onCompleted: showThumnail(thumbnail.enableThumbNail)
     states: [
         State {
             name: "disabled"
@@ -54,4 +57,5 @@ Item {
             PropertyChanges { target: thumbnailEnabled; source: thumbnail.imageSource }
         }
     ]
+
 }

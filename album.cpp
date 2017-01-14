@@ -116,7 +116,41 @@ QString Album::getCardFourURL() const
     return this->cardsManager->getCard(cardMIDs.at(3)).getImageURL();
 }
 
+bool Album::getCardOneLoaded() const
+{
+    if (this->cardMIDs.count() < 1)
+    {
+        return false;
+    }
+    return this->cardsManager->getCard(cardMIDs.at(0)).getLoaded();
+}
 
+bool Album::getCardTwoLoaded() const
+{
+    if (this->cardMIDs.count() < 2)
+    {
+        return false;
+    }
+    return this->cardsManager->getCard(cardMIDs.at(1)).getLoaded();
+}
+
+bool Album::getCardThreeLoaded() const
+{
+    if (this->cardMIDs.count() < 3)
+    {
+        return false;
+    }
+    return this->cardsManager->getCard(cardMIDs.at(2)).getLoaded();
+}
+
+bool Album::getCardFourLoaded() const
+{
+    if (this->cardMIDs.count() < 4)
+    {
+        return false;
+    }
+    return this->cardsManager->getCard(cardMIDs.at(3)).getLoaded();
+}
 // Management
 void Album::addCard(const int cardMID)
 {

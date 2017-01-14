@@ -41,6 +41,11 @@ public:
     QString getCardThreeURL() const;
     QString getCardFourURL() const;
 
+    bool getCardOneLoaded() const;
+    bool getCardTwoLoaded() const;
+    bool getCardThreeLoaded() const;
+    bool getCardFourLoaded() const;
+
     // Management
     void addCard(const int cardMID);
     void removeCard(const int cardMID);

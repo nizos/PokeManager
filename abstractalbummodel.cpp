@@ -36,7 +36,16 @@ QVariant AbstractAlbumModel::data(const QModelIndex &index, int role)  const
         return album.getCardThreeURL();
     else if (role == CardFourInAlbumRole)
         return album.getCardFourURL();
+    else if (role == CardOneLoadedRole)
+        return album.getCardOneLoaded();
+    else if (role == CardTwoLoadedRole)
+        return album.getCardTwoLoaded();
+    else if (role == CardThreeLoadedRole)
+        return album.getCardThreeLoaded();
+    else if (role == CardFourLoadedRole)
+        return album.getCardFourLoaded();
     return QVariant();
+
 }
 
 // Role names
@@ -50,5 +59,9 @@ QHash<int, QByteArray> AbstractAlbumModel::roleNames() const
     roles[CardTwoInAlbumRole] = "cardTwoInAlbum";
     roles[CardThreeInAlbumRole] = "cardThreeInAlbum";
     roles[CardFourInAlbumRole] = "cardFourInAlbum";
+    roles[CardOneLoadedRole] = "cardOneLoaded";
+    roles[CardTwoLoadedRole] = "cardTwoLoaded";
+    roles[CardThreeLoadedRole] = "cardThreeLoaded";
+    roles[CardFourLoadedRole] = "cardFourLoaded";
     return roles;
 }

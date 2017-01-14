@@ -34,6 +34,8 @@ App::App(QObject *parent): QObject(parent)
                          albumsModel, SLOT(onAlbumAdded(int)));
     connect(albumsManager, SIGNAL(cardAdded(int,QString)),
                          albumsModel, SLOT(onCardAdded(int,QString)));
+    connect(cardsManager, SIGNAL(cardUpdated(int,QString)),
+                         albumsModel, SLOT(onCardUpdated(int,QString)));
 
 
     connect(networkManager,SIGNAL(readyData(QByteArray)),
@@ -42,13 +44,13 @@ App::App(QObject *parent): QObject(parent)
     albumsManager->addAlbum("My Cards");
     albumsManager->addAlbum("My Favorites");
 
-    albumsManager->addCard(1001,"xy7-5");
-    albumsManager->addCard(1001,"xy7-6");
-    albumsManager->addCard(1001,"xy7-7");
-    albumsManager->addCard(1001,"xy7-8");
+//    albumsManager->addCard(1001,"xy7-5");
+//    albumsManager->addCard(1001,"xy7-6");
+//    albumsManager->addCard(1001,"xy7-7");
+//    albumsManager->addCard(1001,"xy7-8");
 
-    albumsManager->addCard(1002,"xy7-13");
-    albumsManager->addCard(1002,"xy7-14");
+//    albumsManager->addCard(1002,"xy7-13");
+//    albumsManager->addCard(1002,"xy7-14");
 
     albumCardsModel->showAlbum(1001);
     albumsModel->showAlbums();

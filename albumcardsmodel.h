@@ -30,6 +30,7 @@ protected:
 
 signals:
     void cardAdded(const int nrOfCards);
+    void cardUpdated();
 
 private slots:
     void onAlbumAdded(const int albumMID);

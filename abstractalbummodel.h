@@ -11,7 +11,7 @@ class AbstractAlbumModel: public QAbstractListModel
     Q_OBJECT
 public:
     // AlbumRoles
-    enum AlbumRoles { AlbumNameRole = Qt::UserRole + 1, AlbumIDRole, CardsInAlbumRole, CardOneInAlbumRole, CardTwoInAlbumRole, CardThreeInAlbumRole, CardFourInAlbumRole};
+    enum AlbumRoles { AlbumNameRole = Qt::UserRole + 1, AlbumIDRole, CardsInAlbumRole, CardOneInAlbumRole, CardTwoInAlbumRole, CardThreeInAlbumRole, CardFourInAlbumRole, CardOneLoadedRole, CardTwoLoadedRole, CardThreeLoadedRole, CardFourLoadedRole};
 
     // Default Constructor
     AbstractAlbumModel(QObject* parent = 0);

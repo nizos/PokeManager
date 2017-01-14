@@ -12,7 +12,7 @@ class AbstractCardModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    enum AlbumRoles { CardIDRole = Qt::UserRole + 1, CardMIDRole, NameRole, ImageURLRole, SubtypeRole, SupertypeRole, NumberRole, ArtistRole, RarityRole, SeriesRole, SetRole,  SetCodeRole, ConditionRole, StatusRole};
+    enum AlbumRoles { CardIDRole = Qt::UserRole + 1, InAlbumMIDRole, CardMIDRole, NameRole, ImageURLRole, SubtypeRole, SupertypeRole, NumberRole, ArtistRole, RarityRole, SeriesRole, SetRole,  SetCodeRole, ConditionRole, StatusRole, LoadedRole};
 
     AbstractCardModel(QObject *parent = 0);
     AbstractCardModel(CardsManager *cardManagerPointer, QObject *parent = 0);

@@ -66,6 +66,8 @@ void AlbumCardsModel::onCardAdded(const int albumMID, const QString cardMID)
     endInsertRows();
 
     emit cardAdded(album.getNrOfCards());
+    emit dataChanged(QModelIndex(), QModelIndex());
+
 }
 
 void AlbumCardsModel::onCardUpdated(const int albumMID, const QString cardMID)
@@ -75,9 +77,12 @@ void AlbumCardsModel::onCardUpdated(const int albumMID, const QString cardMID)
     const Album updatedAlbum = albumsManager->getAlbum(albumMID);
     const int row = updatedAlbum.getCardMIDs().indexOf(cardMID);
 
-    layoutAboutToBeChanged();
-    album = updatedAlbum;
-    layoutChanged();
 
-    emit cardAdded(album.getNrOfCards());
+    album = updatedAlbum;
+    emit cardUpdated();
+    emit dataChanged(QModelIndex(), QModelIndex());
+
+
+//    emit cardAdded(album.getNrOfCards());
+
 }

@@ -80,7 +80,21 @@ void AlbumsModel::onCardAdded(const int &albumId, const QString &cMID)
     m_albums = m_albumsManager->getAlbumsSpec();
     endResetModel();
     emit albumAdded(m_albums.getNrOfAlbums());
+    emit cardUpdated();
+    emit dataChanged(QModelIndex(), QModelIndex());
+    emit albumAdded(m_albums.getNrOfAlbums());
 }
+
+void AlbumsModel::onCardUpdated(const int albumMID, const QString cardMID)
+{
+    beginResetModel();
+    m_albums = m_albumsManager->getAlbumsSpec();
+    endResetModel();
+
+    emit cardUpdated();
+    emit dataChanged(QModelIndex(), QModelIndex());
+}
+
 
 //// Receives a signal from the AlbumsManager when a Card is removed from an Album
 //void AlbumsModel::onCardRemoved(const int &albumId)

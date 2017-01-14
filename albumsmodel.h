@@ -32,10 +32,12 @@ protected:
 
 signals:
     void albumAdded(const int nrOfAlbums);
+    void cardUpdated();
 
 private slots:
     void onAlbumAdded(const int &albumId);
     void onCardAdded(const int &albumId, const QString &cMID);
+    void onCardUpdated(const int albumMID, const QString cardMID);
 
 private:
     AlbumsManager *m_albumsManager;
