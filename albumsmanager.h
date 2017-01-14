@@ -14,31 +14,31 @@ class AlbumsManager: public QObject
 private:
     CardsManager *cardsManager;
     QList<Album> albums;
-    Albums m_albums;
-    int uniqueIds;
-    int linearSearch(const int &id) const;
+    Albums albumsSpec;
+    int albumMIDs;
+    int linearSearch(const int &albumMID) const;
 
 public:
     // Constructors & Destructor
     explicit AlbumsManager(QObject* parent = 0);
 
     // Setters
-    void setCardsManager(CardsManager *cardsManager);
+    void setCardsManager(CardsManager* cardsManager);
 
     // Getters
     int getNrOfAlbums() const;
-    Album getAlbum(int id) const;
+    Album getAlbum(int albumMID) const;
     QList<Album> getAlbums();
     Albums getAlbumsSpec();
 
     // Management
-    Q_INVOKABLE void addAlbum(const QString &name);
-    Q_INVOKABLE void addCard(const int &albumId, const QString &cardId);
+    Q_INVOKABLE void addAlbum(const QString &albumName);
+    Q_INVOKABLE void addCard(const int &albumMID, const QString &cardReq);
 
 signals:
     // Signals
-    void albumAdded(const int id);
-    void cardAdded(const int albumId, const QString cMID);
+    void albumAdded(const int albumMID);
+    void cardAdded(const int albumMID, const QString cardMID);
 };
 
 #endif // ALBUMSMANAGER_H

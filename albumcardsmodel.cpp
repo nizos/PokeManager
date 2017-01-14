@@ -2,68 +2,82 @@
 AlbumCardsModel::AlbumCardsModel(QObject *parent)
     : AbstractCardModel(parent)
 {
-    m_albumsManager = nullptr;
-    m_cardsManager = nullptr;
+    albumsManager = nullptr;
+    cardsManager = nullptr;
 }
 
 AlbumCardsModel::AlbumCardsModel(AlbumsManager *albumsManager, CardsManager *cardsManager, QObject *parent)
     : AbstractCardModel(cardsManager, parent)
 {
-    this->m_albumsManager = albumsManager;
-    this->m_cardsManager = cardsManager;
+    this->albumsManager = albumsManager;
+    this->cardsManager = cardsManager;
 
-    connect(m_albumsManager, SIGNAL(albumAdded(int)),
+    connect(albumsManager, SIGNAL(albumAdded(int)),
             this, SLOT(onAlbumAdded(int)));
-    connect(m_albumsManager, SIGNAL(cardAdded(int,QString)),
+    connect(albumsManager, SIGNAL(cardAdded(int,QString)),
             this, SLOT(onCardAdded(int,QString)));
 }
 
 void AlbumCardsModel::setAlbumsManager(AlbumsManager *albumsManager)
 {
-    this->m_albumsManager = albumsManager;
+    this->albumsManager = albumsManager;
 }
 
 void AlbumCardsModel::setCardsManager(CardsManager *cardsManager)
 {
-    this->m_cardsManager = cardsManager;
-    this->AbstractCardModel::setCardsManager(m_cardsManager);
+    this->cardsManager = cardsManager;
+    this->AbstractCardModel::setCardsManager(cardsManager);
 }
 
-void AlbumCardsModel::showAlbum(const int albumId)
+void AlbumCardsModel::showAlbum(const int albumMID)
 {
     beginResetModel();
-    m_album = m_albumsManager->getAlbum(albumId);
+    album = albumsManager->getAlbum(albumMID);
     endResetModel();
 }
 
 int AlbumCardsModel::rowCount(const QModelIndex &) const
 {
-    return this->m_album.getCardMIDs().count();
+    return this->album.getCardMIDs().count();
 }
 Card AlbumCardsModel::cardForIndex(const QModelIndex &index) const
 {
-    return this->m_cardsManager->card(m_album.getCardMIDs().at(index.row()));
+    return this->cardsManager->getCard(album.getCardMIDs().at(index.row()));
 }
 
-void AlbumCardsModel::onAlbumAdded(const int albumId)
+void AlbumCardsModel::onAlbumAdded(const int albumMID)
 {
-    if (albumId != m_album.getId()) return;
+    if (albumMID != album.getAlbumMID()) return;
     beginResetModel();
-    m_album = m_albumsManager->getAlbum(albumId);
+    album = albumsManager->getAlbum(albumMID);
     endResetModel();
 }
 
 
-void AlbumCardsModel::onCardAdded(const int albumId, const QString cMID)
+void AlbumCardsModel::onCardAdded(const int albumMID, const QString cardMID)
 {
-    if (albumId != m_album.getId()) return;
+    if (albumMID != album.getAlbumMID()) return;
 
-    const Album updatedAlbum = m_albumsManager->getAlbum(albumId);
-    const int row = updatedAlbum.getCardMIDs().indexOf(cMID);
+    const Album updatedAlbum = albumsManager->getAlbum(albumMID);
+    const int row = updatedAlbum.getCardMIDs().indexOf(cardMID);
 
     beginInsertRows(QModelIndex(), row, row);
-    m_album = updatedAlbum;
+    album = updatedAlbum;
     endInsertRows();
 
-    emit cardAdded(m_album.getNrOfCards());
+    emit cardAdded(album.getNrOfCards());
+}
+
+void AlbumCardsModel::onCardUpdated(const int albumMID, const QString cardMID)
+{
+    if (albumMID != album.getAlbumMID()) return;
+
+    const Album updatedAlbum = albumsManager->getAlbum(albumMID);
+    const int row = updatedAlbum.getCardMIDs().indexOf(cardMID);
+
+    layoutAboutToBeChanged();
+    album = updatedAlbum;
+    layoutChanged();
+
+    emit cardAdded(album.getNrOfCards());
 }

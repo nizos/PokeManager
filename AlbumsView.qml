@@ -7,7 +7,6 @@ Item {
     Rectangle {
         id: album
         property int totalCards: model.nrOfCards
-        property int stackedCards: model.nrOfCards
         height: 400
         width: 300
         color: 'Transparent'
@@ -20,38 +19,43 @@ Item {
         {
             if(album.totalCards < 1)
             {
-                thumbnail1.showThumbNail = false;
-                thumbnail2.showThumbNail = false;
-                thumbnail3.showThumbNail = false;
-                thumbnail4.showThumbNail = false;
+                thumbnail1.enableThumbNail = false;
+                thumbnail2.enableThumbNail = false;
+                thumbnail3.enableThumbNail = false;
+                thumbnail4.enableThumbNail = false;
+                print("totalCards is 1: 0,0,0,0")
             }
             if(album.totalCards == 1)
             {
-                thumbnail1.showThumbNail = true;
-                thumbnail2.showThumbNail = false;
-                thumbnail3.showThumbNail = false;
-                thumbnail4.showThumbNail = false;
+                thumbnail1.enableThumbNail = true;
+                thumbnail2.enableThumbNail = false;
+                thumbnail3.enableThumbNail = false;
+                thumbnail4.enableThumbNail = false;
+                print("totalCards is 1: 1,0,0,0")
             }
             if(album.totalCards == 2)
             {
-                thumbnail1.showThumbNail = true;
-                thumbnail2.showThumbNail = true;
-                thumbnail3.showThumbNail = false;
-                thumbnail4.showThumbNail = false;
+                thumbnail1.enableThumbNail = true;
+                thumbnail2.enableThumbNail = true;
+                thumbnail3.enableThumbNail = false;
+                thumbnail4.enableThumbNail = false;
+                print("totalCards is 1: 1,1,0,0")
             }
             if(album.totalCards == 3)
             {
-                thumbnail1.showThumbNail = true;
-                thumbnail2.showThumbNail = true;
-                thumbnail3.showThumbNail = true;
-                thumbnail4.showThumbNail = false;
+                thumbnail1.enableThumbNail = true;
+                thumbnail2.enableThumbNail = true;
+                thumbnail3.enableThumbNail = true;
+                thumbnail4.enableThumbNail = false;
+                print("totalCards is 1: 1,1,1,0")
             }
             if(album.totalCards >= 4)
             {
-                thumbnail1.showThumbNail = true;
-                thumbnail2.showThumbNail = true;
-                thumbnail3.showThumbNail = true;
-                thumbnail4.showThumbNail = true;
+                thumbnail1.enableThumbNail = true;
+                thumbnail2.enableThumbNail = true;
+                thumbnail3.enableThumbNail = true;
+                thumbnail4.enableThumbNail = true;
+                print("totalCards is 1: 1,1,1,1")
             }
         }
 
@@ -70,6 +74,7 @@ Item {
                     imageWidth: 150
                     imageSource: album.cardOne
                     anchors.centerIn: parent
+                    enableThumbNail: false
                 }
                 ThumbNail {
                     id: thumbnail2
@@ -77,6 +82,7 @@ Item {
                     imageWidth: 150
                     imageSource: album.cardTwo
                     anchors.centerIn: parent
+                    enableThumbNail: false
                 }
                 ThumbNail {
                     id: thumbnail3
@@ -84,6 +90,7 @@ Item {
                     imageWidth: 150
                     imageSource: album.cardThree
                     anchors.centerIn: parent
+                    enableThumbNail: false
                 }
                 ThumbNail {
                     id: thumbnail4
@@ -91,6 +98,7 @@ Item {
                     imageWidth: 150
                     imageSource: album.cardFour
                     anchors.centerIn: parent
+                    enableThumbNail: false
                 }
 
                 MouseArea {
@@ -102,6 +110,7 @@ Item {
                     }
                 }
             }
+            Component.onCompleted: album.showThumbnails(model.nrOfCards)
             Rectangle {
                 id: info
                 color: "Transparent"
@@ -129,7 +138,7 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            mainApp.albumsardsModel.showAlbum(model.albumId);
+                            mainApp.albumCardsModel.showAlbum(model.albumId);
                             swipeView.currentIndex = 3;
                             appWindow.currentAlbum = model.albumId;
                         }
@@ -141,6 +150,18 @@ Item {
 
 
         }
+
+         Item {
+             Connections {
+                 target: MyModel
+                 onCardAdded:
+                 {
+                     album.totalCards = model.nrOfCards
+                     showThumbnails(album.totalCards)
+
+                 }
+             }
+         }
 
     }
 

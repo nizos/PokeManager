@@ -3,77 +3,81 @@
 // Default Constructor
 App::App(QObject *parent): QObject(parent)
 {
-    this->m_albumsManager = new AlbumsManager();
-    this->m_cardsManager = new CardsManager();
-    this->m_albumsModel = new AlbumsModel();
-    this->m_albumCardsModel = new AlbumCardsModel();
-    this->m_networkManager = new MainNetworkManager();
+    this->albumsManager = new AlbumsManager();
+    this->cardsManager = new CardsManager();
+    this->albumsModel = new AlbumsModel();
+    this->albumCardsModel = new AlbumCardsModel();
+    this->networkManager = new MainNetworkManager();
 
 
-    this->m_albumsManager->setCardsManager(m_cardsManager);
-    this->m_albumsModel->setAlbumsManager(m_albumsManager);
-    this->m_albumsModel->setCardsManager(m_cardsManager);
-    this->m_albumCardsModel->setAlbumsManager(m_albumsManager);
-    this->m_albumCardsModel->setCardsManager(m_cardsManager);
+    this->albumsManager->setCardsManager(cardsManager);
+    this->albumsModel->setAlbumsManager(albumsManager);
+    this->albumsModel->setCardsManager(cardsManager);
+    this->albumCardsModel->setAlbumsManager(albumsManager);
+    this->albumCardsModel->setCardsManager(cardsManager);
 
     qmlRegisterType<AlbumsManager>("PokeApp.Classes.Core", 1, 0, "AlbumsManager");
     qmlRegisterType<CardsManager>("PokeApp.Classes.Core", 1, 0, "CardsManager");
     qmlRegisterType<AlbumCardsModel>("PokeApp.Classes.Core", 1, 0, "AlbumCardsModel");
     qmlRegisterType<AlbumsModel>("PokeApp.Classes.Core", 1, 0, "AlbumsModel");
 
-    connect(m_albumsManager, SIGNAL(albumAdded(int)),
-                         m_albumCardsModel, SLOT(onAlbumAdded(int)));
-    connect(m_albumsManager, SIGNAL(cardAdded(int,QString)),
-                         m_albumCardsModel, SLOT(onCardAdded(int,QString)));
+    // AlbumCards Model
+    connect(albumsManager, SIGNAL(albumAdded(int)),
+                         albumCardsModel, SLOT(onAlbumAdded(int)));
+    connect(albumsManager, SIGNAL(cardAdded(int,QString)),
+                         albumCardsModel, SLOT(onCardAdded(int,QString)));
+    connect(cardsManager, SIGNAL(cardUpdated(int,QString)),
+                         albumCardsModel, SLOT(onCardUpdated(int,QString)));
 
-    connect(m_albumsManager, SIGNAL(albumAdded(int)),
-                         m_albumsModel, SLOT(onAlbumAdded(int)));
-    connect(m_albumsManager, SIGNAL(cardAdded(int,QString)),
-                         m_albumsModel, SLOT(onCardAdded(int,QString)));
+    // Albums Model
+    connect(albumsManager, SIGNAL(albumAdded(int)),
+                         albumsModel, SLOT(onAlbumAdded(int)));
+    connect(albumsManager, SIGNAL(cardAdded(int,QString)),
+                         albumsModel, SLOT(onCardAdded(int,QString)));
 
 
-    connect(m_networkManager,SIGNAL(readyData(QByteArray)),
+    connect(networkManager,SIGNAL(readyData(QByteArray)),
             this,SLOT(dataFromNetwork(QByteArray)));
 
-    m_albumsManager->addAlbum("My Cards");
-    m_albumsManager->addAlbum("My Favorites");
+    albumsManager->addAlbum("My Cards");
+    albumsManager->addAlbum("My Favorites");
 
-    m_albumsManager->addCard(1001,"xy7-5");
-    m_albumsManager->addCard(1001,"xy7-6");
-    m_albumsManager->addCard(1001,"xy7-7");
-    m_albumsManager->addCard(1001,"xy7-8");
+    albumsManager->addCard(1001,"xy7-5");
+    albumsManager->addCard(1001,"xy7-6");
+    albumsManager->addCard(1001,"xy7-7");
+    albumsManager->addCard(1001,"xy7-8");
 
-    m_albumsManager->addCard(1002,"xy7-13");
-    m_albumsManager->addCard(1002,"xy7-14");
+    albumsManager->addCard(1002,"xy7-13");
+    albumsManager->addCard(1002,"xy7-14");
 
-    m_albumCardsModel->showAlbum(1001);
-    m_albumsModel->showAlbums();
+    albumCardsModel->showAlbum(1001);
+    albumsModel->showAlbums();
 }
 
 //// Getters
-AlbumsManager* App::albumsManager() const
+AlbumsManager* App::getAlbumsManager() const
 {
-    return this->m_albumsManager;
+    return this->albumsManager;
 }
 
-CardsManager* App::cardsManager() const
+CardsManager* App::getCardsManager() const
 {
-    return this->m_cardsManager;
+    return this->cardsManager;
 }
 
-AlbumsModel* App::albumsModel() const
+AlbumsModel* App::getAlbumsModel() const
 {
-    return this->m_albumsModel;
+    return this->albumsModel;
 }
 
-AlbumCardsModel* App::albumCardsModel() const
+AlbumCardsModel* App::getAlbumCardsModel() const
 {
-    return this->m_albumCardsModel;
+    return this->albumCardsModel;
 }
 
-MainNetworkManager* App::mainNetworkManager() const
+MainNetworkManager* App::getMainNetworkManager() const
 {
-    return this->m_networkManager;
+    return this->networkManager;
 }
 
 void App::dataFromNetwork(QByteArray data)
@@ -86,7 +90,7 @@ void App::dataFromNetwork(QByteArray data)
     QString imgUrl = item["imageUrl"].toString();
     imgUrl = ("http://s3.amazonaws.com/pokemontcg/xy7/54.png");
 
-    m_networkManager->makeRequest(imgUrl);
+    networkManager->makeRequest(imgUrl);
     QPixmap img;
     if(img.loadFromData(data,"PNG"))
     {

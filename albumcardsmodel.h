@@ -20,7 +20,7 @@ public:
     AlbumCardsModel(QObject *parent = 0);
     AlbumCardsModel(AlbumsManager *albumsManager, CardsManager *cardsManager, QObject *parent = 0);
 
-    Q_INVOKABLE void showAlbum(const int albumId);
+    Q_INVOKABLE void showAlbum(const int albumMID);
     int rowCount(const QModelIndex &parent) const;
     void setAlbumsManager(AlbumsManager *albumsManager);
     void setCardsManager(CardsManager *cardsManager);
@@ -32,13 +32,14 @@ signals:
     void cardAdded(const int nrOfCards);
 
 private slots:
-    void onAlbumAdded(const int albumId);
-    void onCardAdded(const int albumId, const QString cMID);
+    void onAlbumAdded(const int albumMID);
+    void onCardAdded(const int albumMID, const QString cardMID);
+    void onCardUpdated(const int albumMID, const QString cardMID);
 
 private:
-    AlbumsManager *m_albumsManager;
-    CardsManager *m_cardsManager;
-    Album m_album;
+    AlbumsManager *albumsManager;
+    CardsManager *cardsManager;
+    Album album;
 };
 
 #endif // ALBUMCARDSMODEL_H

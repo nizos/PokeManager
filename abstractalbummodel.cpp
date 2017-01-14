@@ -23,9 +23,9 @@ QVariant AbstractAlbumModel::data(const QModelIndex &index, int role)  const
         return QVariant();
     Album &album = albumForIndex(index);
     if (role == AlbumNameRole)
-        return album.getName();
+        return album.getAlbumName();
     else if (role == AlbumIDRole)
-        return album.getId();
+        return album.getAlbumMID();
     else if (role == CardsInAlbumRole)
         return album.getNrOfCards();
     else if (role == CardOneInAlbumRole)

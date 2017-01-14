@@ -23,9 +23,9 @@ int main(int argc, char *argv[])
     QQmlContext *ctxt1 = engine.rootContext();
     ctxt1->setContextProperty("mainApp", &mainApp);
     QQmlContext *ctxt2 = engine.rootContext();
-    ctxt2->setContextProperty("MyModel", mainApp.albumCardsModel());
+    ctxt2->setContextProperty("MyModel", mainApp.getAlbumCardsModel());
     QQmlContext *ctxt3 = engine.rootContext();
-    ctxt3->setContextProperty("MyAlbumsModel", mainApp.albumsModel());
+    ctxt3->setContextProperty("MyAlbumsModel", mainApp.getAlbumsModel());
 
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 

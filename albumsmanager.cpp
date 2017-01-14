@@ -4,15 +4,15 @@
 // Constructors & Destructor
 AlbumsManager::AlbumsManager(QObject* parent) :QObject(parent)
 {
-    this->uniqueIds = 1000;
+    this->albumMIDs = 1000;
     this->cardsManager = nullptr;
 }
 
-int AlbumsManager::linearSearch(const int &id) const
+int AlbumsManager::linearSearch(const int &albumMID) const
 {
     int pos = -1;
     for (int i = 0; i < this->albums.count() && pos == -1; i++) {
-        if (this->albums[i].getId() == id)
+        if (this->albums[i].getAlbumMID() == albumMID)
         {
             pos = i;
         }
@@ -33,9 +33,9 @@ int AlbumsManager::getNrOfAlbums() const
 }
 
 
-Album AlbumsManager::getAlbum(int id) const
+Album AlbumsManager::getAlbum(int albumMID) const
 {
-    int pos = this->linearSearch(id);
+    int pos = this->linearSearch(albumMID);
     if (pos == -1)
     {
         QString exc = "Album Id not found.";
@@ -51,30 +51,30 @@ QList<Album> AlbumsManager::getAlbums()
 
 Albums AlbumsManager::getAlbumsSpec()
 {
-    return this->m_albums;
+    return this->albumsSpec;
 }
 
 
 // Management
-void AlbumsManager::addAlbum(const QString &name)
+void AlbumsManager::addAlbum(const QString &albumName)
 {
-    uniqueIds++;
-    Album newAlb(name,uniqueIds,cardsManager);
+    albumMIDs++;
+    Album newAlb(albumName,albumMIDs,cardsManager);
     albums << newAlb;
-    m_albums.addAlbum(uniqueIds);
-    emit albumAdded(uniqueIds);
+    albumsSpec.addAlbum(albumMIDs);
+    emit albumAdded(albumMIDs);
 }
 
-void AlbumsManager::addCard(const int &id, const QString &cardId)
+void AlbumsManager::addCard(const int &albumMID, const QString &cardReq)
 {
-    int pos = this->linearSearch(id);
+    int pos = this->linearSearch(albumMID);
     if (pos == -1)
     {
-        QString exc = "Album Id not found.";
+        QString exc = "albumMID Id not found.";
         throw exc;
     }
-    this->albums[pos].addCard(cardsManager->addCard(cardId));
-    QString cMID = this->albums[pos].getCardMID(this->albums[pos].getNrOfCards()-1);
-    emit cardAdded(id,cMID);
+    this->albums[pos].addCard(cardsManager->addCard(albumMID,cardReq));
+    QString cardMID = this->albums[pos].getCardMID(this->albums[pos].getNrOfCards()-1);
+    emit cardAdded(albumMID,cardMID);
 }
 

@@ -14,6 +14,7 @@ class Card
 {
 private:
     int cardMID;
+    int inAlbumMID;
     QString cardID;
     QString name;
     QString imageURL;
@@ -28,33 +29,20 @@ private:
     QString setCode;
     QString condition;
     QString status;
+    bool loaded;
 
 public:
     // Constructors & Destructor
     Card();
-    Card(const int &cardMID, const QString &cardID, const QString &name, const QString &imageURL, const QString &subtype, const QString &supertype, const int &number, const QString &artist, const QString &rarity, const QString &series, const QString &set, const QString &setCode, const QString &condition, const QString &status);
+    Card(const int &inAlbumMID, const int &cardMID);
+    Card(const int &inAlbumMID, const int &cardMID, const QString &cardID, const QString &name, const QString &imageURL, const QString &subtype, const QString &supertype, const int &number, const QString &artist, const QString &rarity, const QString &series, const QString &set, const QString &setCode, const QString &condition, const QString &status);
 
     // Copy & Assignment
     Card(const Card &other);
     Card& operator = (const Card &other);
 
-    // SETTERS
-    void setCardMID(const int newCardMID);
-    void setCardID(const QString newCardID);
-    void setName(const QString newName);
-    void setImageURL(const QString newImageURL);
-    void setSubtype(const QString newSubtype);
-    void setSupertype(const QString newSupertype);
-    void setNumber(const int newNumber);
-    void setArtist(const QString newArtist);
-    void setRarity(const QString newRarity);
-    void setSeries(const QString newSeries);
-    void setSet(const QString newSet);
-    void setSetCode(const QString newSetCode);
-    void setCondition(const QString newCondition);
-    void setStatus(const QString newStatus);
-
     // GETTERS
+    int getInAlbumMID() const;
     int getCardMID() const;
     QString getCardID() const;
     QString getName() const;
@@ -69,6 +57,25 @@ public:
     QString getSetCode() const;
     QString getCondition() const;
     QString getStatus() const;
+    bool getLoaded() const;
+
+    // SETTERS
+    void setInAlbumMID(const int inAlbumMID);
+    void setCardMID(const int newCardMID);
+    void setCardID(const QString newCardID);
+    void setName(const QString newName);
+    void setImageURL(const QString newImageURL);
+    void setSubtype(const QString newSubtype);
+    void setSupertype(const QString newSupertype);
+    void setNumber(const int newNumber);
+    void setArtist(const QString newArtist);
+    void setRarity(const QString newRarity);
+    void setSeries(const QString newSeries);
+    void setSet(const QString newSet);
+    void setSetCode(const QString newSetCode);
+    void setCondition(const QString newCondition);
+    void setStatus(const QString newStatus);
+    void setLoaded(const bool loaded);
 };
 
 #endif // CARD_H

@@ -10,26 +10,26 @@ class Album
 {
 private:
     // Private variables
-    int albumId;
+    int albumMID;
     QString albumName;
     QStringList cardMIDs;
 
-    int linearSearch(const int cMID) const;
+    int linearSearch(const int cardMID) const;
     CardsManager *cardsManager;
 
 public:
     // Constructors & Destructor
     Album();
-    Album(QString albumName, int albumId, CardsManager *cardsManager);
+    Album(QString albumName, int albumMID, CardsManager *cardsManager);
     ~Album();
 
     // Album Setters
-    void setName(const QString albumName);
-    void setId(const int albumId);
+    void setAlbumName(const QString albumName);
+    void setAlbumMID(const int albumMID);
 
     // Album Getters
-    int getId() const;
-    QString getName() const;
+    int getAlbumMID() const;
+    QString getAlbumName() const;
 
     // Card Getters
     int getNrOfCards() const;
@@ -42,8 +42,8 @@ public:
     QString getCardFourURL() const;
 
     // Management
-    void addCard(const int cMID);
-    void removeCard(const int cMID);
+    void addCard(const int cardMID);
+    void removeCard(const int cardMID);
 
 };
 

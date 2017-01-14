@@ -22,23 +22,23 @@ class CardsManager : public QObject
 public:
     CardsManager(QObject* parent = 0);
 
-    int addCard(const QString id);
+    int addCard(const int &albumMID, const QString &cardReq);
     int getNrOfCards() const;
-    Card card(const QString cMID) const;
-    QList<Card> cards() const;
+    Card getCard(const QString cardMID) const;
+    QList<Card> getCards() const;
 
 signals:
-    void cardAdded(const QString cMID);
+    void cardAdded(const int albumMID, const QString cardMID);
+    void cardUpdated(const int albumMID, const QString cardMID);
 
 public slots:
     void dataFromNetwork(const QByteArray data);
 
 private:
-    QList<Card> m_cards;
-    int m_cardMID;
-    MainNetworkManager m_networkManager;
-    QByteArray m_data;
-    int linearSearch(const QString cMID) const;
+    int cardMIDs;
+    QList<Card> cards;
+    MainNetworkManager networkManager;
+    int linearSearch(const int cardMID) const;
 };
 
 #endif // CARDSMANAGER_H
