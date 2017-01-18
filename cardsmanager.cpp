@@ -38,7 +38,7 @@ void CardsManager::dataFromNetwork(QByteArray data)
         QString exc = "cardMID Id not found.";
         throw exc;
     }
-    cards[pos].setName(cardRootValues.value("name").toString());
+    cards[pos].setCardName(cardRootValues.value("name").toString());
     cards[pos].setCardID(cardRootValues.value("id").toString());
     cards[pos].setSubtype(cardRootValues.value("subtype").toString());
     cards[pos].setSupertype(cardRootValues.value("supertype").toString());
@@ -46,13 +46,13 @@ void CardsManager::dataFromNetwork(QByteArray data)
     cards[pos].setArtist(cardRootValues.value("artist").toString());
     cards[pos].setRarity(cardRootValues.value("rarity").toString());
     cards[pos].setSeries(cardRootValues.value("series").toString());
-    cards[pos].setSet(cardRootValues.value("set").toString());
+    cards[pos].setSetName(cardRootValues.value("set").toString());
     cards[pos].setSetCode(cardRootValues.value("setCode").toString());
     cards[pos].setImageURL(cardRootValues.value("imageUrl").toString());
     cards[pos].setStatus("Not specified");
     cards[pos].setCondition("Not specified");
     cards[pos].setLoaded(true);
-    int albumMID = cards[pos].getInAlbumMID();
+    int albumMID = cards[pos].getAlbumMID();
     QString cardMIDString = QString::number(cardMIDs);
     emit cardUpdated(albumMID,cardMIDString);
 }
@@ -76,7 +76,7 @@ void CardsManager::mappedReply(QString cardMID)
         QString exc = "cardMID Id not found.";
         throw exc;
     }
-    cards[pos].setName(cardRootValues.value("name").toString());
+    cards[pos].setCardName(cardRootValues.value("name").toString());
     cards[pos].setCardID(cardRootValues.value("id").toString());
     cards[pos].setSubtype(cardRootValues.value("subtype").toString());
     cards[pos].setSupertype(cardRootValues.value("supertype").toString());
@@ -84,13 +84,13 @@ void CardsManager::mappedReply(QString cardMID)
     cards[pos].setArtist(cardRootValues.value("artist").toString());
     cards[pos].setRarity(cardRootValues.value("rarity").toString());
     cards[pos].setSeries(cardRootValues.value("series").toString());
-    cards[pos].setSet(cardRootValues.value("set").toString());
+    cards[pos].setSetName(cardRootValues.value("set").toString());
     cards[pos].setSetCode(cardRootValues.value("setCode").toString());
     cards[pos].setImageURL(cardRootValues.value("imageUrl").toString());
     cards[pos].setStatus("Not specified");
     cards[pos].setCondition("Not specified");
     cards[pos].setLoaded(true);
-    int albumMID = cards[pos].getInAlbumMID();
+    int albumMID = cards[pos].getAlbumMID();
     emit cardUpdated(albumMID,cardMID);
 
     reply->deleteLater();

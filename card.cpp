@@ -3,10 +3,10 @@
 // Default Constructor
 Card::Card()
 {
-    this->inAlbumMID = -1;
+    this->albumMID = -1;
     this->cardMID = 100;
     this->cardID = "Default cardID";
-    this->name = "Default name";
+    this->cardName = "Default card name";
     this->imageURL = "qrc:/gui/GUI/emptyCard.png";
     this->subtype = "Default subtype";
     this->supertype = "Default supertype";
@@ -14,19 +14,21 @@ Card::Card()
     this->artist = "Default artist";
     this->rarity = "Default rarity";
     this->series = "Default series";
-    this->set = "Default set";
+    this->setName = "Default setName";
     this->setCode = "Default setCode";
     this->condition = "Default condition";
     this->status = "Default status";
     this->loaded = false;
+    this->cardAdded = QDateTime::currentDateTime();
+    this->cardEdited = QDateTime::currentDateTime();
 }
 
-Card::Card(const int &inAlbumMID, const int &cardMID)
+Card::Card(const int &albumMID, const int &cardMID)
 {
-    this->inAlbumMID = inAlbumMID;
+    this->albumMID = albumMID;
     this->cardMID = cardMID;
     this->cardID = "Default cardID";
-    this->name = "Default name";
+    this->cardName = "Default card name";
     this->imageURL = "qrc:/gui/GUI/emptyCard.png";
     this->subtype = "Default subtype";
     this->supertype = "Default supertype";
@@ -34,20 +36,22 @@ Card::Card(const int &inAlbumMID, const int &cardMID)
     this->artist = "Default artist";
     this->rarity = "Default rarity";
     this->series = "Default series";
-    this->set = "Default set";
+    this->setName = "Default setName";
     this->setCode = "Default setCode";
     this->condition = "Default condition";
     this->status = "Default status";
     this->loaded = false;
+    this->cardAdded = QDateTime::currentDateTime();
+    this->cardEdited = QDateTime::currentDateTime();
 }
 
 // Overloaded Constructor
-Card::Card(const int &inAlbumMID, const int &cardMID, const QString &cardID, const QString &name, const QString &imageURL, const QString &subtype, const QString &supertype, const int &number, const QString &artist, const QString &rarity, const QString &series, const QString &set, const QString &setCode, const QString &condition, const QString &status)
+Card::Card(const int &albumMID, const int &cardMID, const QString &cardID, const QString &cardName, const QString &imageURL, const QString &subtype, const QString &supertype, const int &number, const QString &artist, const QString &rarity, const QString &series, const QString &setName, const QString &setCode, const QString &condition, const QString &status, const QDateTime &cardAdded, const QDateTime &cardEdited)
 {
-    this->inAlbumMID = inAlbumMID;
+    this->albumMID = albumMID;
     this->cardMID = cardMID;
     this->cardID = cardID;
-    this->name = name;
+    this->cardName = cardName;
     this->imageURL = imageURL;
     this->subtype = subtype;
     this->supertype = supertype;
@@ -55,21 +59,23 @@ Card::Card(const int &inAlbumMID, const int &cardMID, const QString &cardID, con
     this->artist = artist;
     this->rarity = rarity;
     this->series = series;
-    this->set = set;
+    this->setName = setName;
     this->setCode = setCode;
     this->condition = condition;
     this->status = status;
     this->loaded = true;
+    this->cardAdded = cardAdded;
+    this->cardEdited = cardEdited;
 }
 
 
 // Copy & Assignment
 Card::Card(const Card &other)
 {
-    this->inAlbumMID = other.inAlbumMID;
+    this->albumMID = other.albumMID;
     this->cardMID = other.cardMID;
     this->cardID = other.cardID;
-    this->name = other.name;
+    this->cardName = other.cardName;
     this->imageURL = other.imageURL;
     this->subtype = other.subtype;
     this->supertype = other.supertype;
@@ -77,21 +83,23 @@ Card::Card(const Card &other)
     this->artist = other.artist;
     this->rarity = other.rarity;
     this->series = other.series;
-    this->set = other.set;
+    this->setName = other.setName;
     this->setCode = other.setCode;
     this->condition = other.condition;
     this->status = other.status;
     this->loaded = other.loaded;
+    this->cardAdded = other.cardAdded;
+    this->cardEdited = other.cardEdited;
 }
 
 Card& Card::operator = (const Card &other)
 {
     if (this != &other)
     {
-        this->inAlbumMID = other.inAlbumMID;
+        this->albumMID = other.albumMID;
         this->cardMID = other.cardMID;
         this->cardID = other.cardID;
-        this->name = other.name;
+        this->cardName = other.cardName;
         this->imageURL = other.imageURL;
         this->subtype = other.subtype;
         this->supertype = other.supertype;
@@ -99,20 +107,22 @@ Card& Card::operator = (const Card &other)
         this->artist = other.artist;
         this->rarity = other.rarity;
         this->series = other.series;
-        this->set = other.set;
+        this->setName = other.setName;
         this->setCode = other.setCode;
         this->condition = other.condition;
         this->status = other.status;
         this->loaded = other.loaded;
+        this->cardAdded = other.cardAdded;
+        this->cardEdited = other.cardEdited;
     }
     return *this;
 }
 
 
 // GETTERS
-int Card::getInAlbumMID() const
+int Card::getAlbumMID() const
 {
-    return this->inAlbumMID;
+    return this->albumMID;
 }
 
 int Card::getCardMID() const
@@ -126,9 +136,9 @@ QString Card::getCardID() const
     return this->cardID;
 }
 
-QString Card::getName() const
+QString Card::getCardName() const
 {
-    return this->name;
+    return this->cardName;
 }
 
 QString Card::getImageURL() const
@@ -166,9 +176,9 @@ QString Card::getSeries() const
     return this->series;
 }
 
-QString Card::getSet() const
+QString Card::getSetName() const
 {
-    return this->set;
+    return this->setName;
 }
 
 QString Card::getSetCode() const
@@ -191,10 +201,20 @@ bool Card::getLoaded() const
     return this->loaded;
 }
 
-// SETTERS
-void Card::setInAlbumMID(const int inAlbumMID)
+QDateTime Card::getCardAdded() const
 {
-    this->inAlbumMID = inAlbumMID;
+    return this->cardAdded;
+}
+
+QDateTime Card::getCardEdited() const
+{
+    return this->cardEdited;
+}
+
+// SETTERS
+void Card::setAlbumMID(const int albumMID)
+{
+    this->albumMID = albumMID;
 }
 
 void Card::setCardMID(const int newCardMID)
@@ -207,9 +227,9 @@ void Card::setCardID(const QString newCardID)
     this->cardID = newCardID;
 }
 
-void Card::setName(const QString newName)
+void Card::setCardName(const QString newCardName)
 {
-    this->name = newName;
+    this->cardName = newCardName;
 }
 
 void Card::setImageURL(const QString newImageURL)
@@ -247,9 +267,9 @@ void Card::setSeries(const QString newSeries)
     this->series = newSeries;
 }
 
-void Card::setSet(const QString newSet)
+void Card::setSetName(const QString newSetName)
 {
-    this->set = newSet;
+    this->setName = newSetName;
 }
 
 void Card::setSetCode(const QString newSetCode)
@@ -270,4 +290,9 @@ void Card::setStatus(const QString newStatus)
 void Card::setLoaded(const bool loaded)
 {
     this->loaded = loaded;
+}
+
+void Card::setCardEdited()
+{
+    this->cardEdited  = QDateTime::currentDateTime();
 }

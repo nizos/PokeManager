@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QString>
 #include <QList>
+#include <QDateTime>
 #include "cardsmanager.h"
 #include "card.h"
 
@@ -13,6 +14,8 @@ private:
     int albumMID;
     QString albumName;
     QStringList cardMIDs;
+    QDateTime albumAdded;
+    QDateTime albumEdited;
 
     int linearSearch(const int cardMID) const;
     CardsManager *cardsManager;
@@ -30,6 +33,8 @@ public:
     // Album Getters
     int getAlbumMID() const;
     QString getAlbumName() const;
+    QDateTime getAlbumAdded() const;
+    QDateTime getAlbumEdited() const;
 
     // Card Getters
     int getNrOfCards() const;
@@ -49,6 +54,7 @@ public:
     // Management
     void addCard(const int cardMID);
     void removeCard(const int cardMID);
+    void setAlbumEdited();
 
 };
 

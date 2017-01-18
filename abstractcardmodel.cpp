@@ -25,14 +25,14 @@ QVariant AbstractCardModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     const Card &card = cardForIndex(index);
-    if (role == InAlbumMIDRole)
-        return card.getInAlbumMID();
+    if (role == AlbumMIDRole)
+        return card.getAlbumMID();
     else if (role == CardIDRole)
         return card.getCardID();
     else if (role == CardMIDRole)
         return card.getCardMID();
-    else if (role == NameRole)
-        return card.getName();
+    else if (role == CardNameRole)
+        return card.getCardName();
     else if (role == ImageURLRole)
         return card.getImageURL();
     else if (role == SubtypeRole)
@@ -47,8 +47,8 @@ QVariant AbstractCardModel::data(const QModelIndex &index, int role) const
         return card.getRarity();
     else if (role == SeriesRole)
         return card.getSeries();
-    else if (role == SetRole)
-        return card.getSet();
+    else if (role == SetNameRole)
+        return card.getSetName();
     else if (role == SetCodeRole)
         return card.getSetCode();
     else if (role == ConditionRole)
@@ -64,10 +64,10 @@ QVariant AbstractCardModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> AbstractCardModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[InAlbumMIDRole] = "inAlbumMID";
+    roles[AlbumMIDRole] = "albumMID";
     roles[CardIDRole] = "cardID";
     roles[CardMIDRole] = "cardMID";
-    roles[NameRole] = "name";
+    roles[CardNameRole] = "cardName";
     roles[ImageURLRole] = "imageURL";
     roles[SubtypeRole] = "subtype";
     roles[SupertypeRole] = "supertype";
@@ -75,7 +75,7 @@ QHash<int, QByteArray> AbstractCardModel::roleNames() const
     roles[ArtistRole] = "artist";
     roles[RarityRole] = "rarity";
     roles[SeriesRole] = "series";
-    roles[SetRole] = "set";
+    roles[SetNameRole] = "setName";
     roles[SetCodeRole] = "setCode";
     roles[ConditionRole] = "condition";
     roles[StatusRole] = "status";

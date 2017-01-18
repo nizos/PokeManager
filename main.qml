@@ -10,5 +10,5 @@ ApplicationWindow {
     height: 680
     title: qsTr("Pokemon Manager")
 
-    AppWindow {}
+    AppWindow { id: appWindow}
 }

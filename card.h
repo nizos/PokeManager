@@ -1,6 +1,7 @@
 #ifndef CARD_H
 #define CARD_H
 #include <QDebug>
+#include <QDateTime>
 #include <QObject>
 #include <QEventLoop>
 #include <QJsonArray>
@@ -14,9 +15,9 @@ class Card
 {
 private:
     int cardMID;
-    int inAlbumMID;
+    int albumMID;
     QString cardID;
-    QString name;
+    QString cardName;
     QString imageURL;
     QString subtype;
     QString supertype;
@@ -25,27 +26,29 @@ private:
     QString artist;
     QString rarity;
     QString series;
-    QString set;
+    QString setName;
     QString setCode;
     QString condition;
     QString status;
     bool loaded;
+    QDateTime cardAdded;
+    QDateTime cardEdited;
 
 public:
     // Constructors & Destructor
     Card();
-    Card(const int &inAlbumMID, const int &cardMID);
-    Card(const int &inAlbumMID, const int &cardMID, const QString &cardID, const QString &name, const QString &imageURL, const QString &subtype, const QString &supertype, const int &number, const QString &artist, const QString &rarity, const QString &series, const QString &set, const QString &setCode, const QString &condition, const QString &status);
+    Card(const int &albumMID, const int &cardMID);
+    Card(const int &albumMID, const int &cardMID, const QString &cardID, const QString &cardName, const QString &imageURL, const QString &subtype, const QString &supertype, const int &number, const QString &artist, const QString &rarity, const QString &series, const QString &setName, const QString &setCode, const QString &condition, const QString &status, const QDateTime &cardAdded, const QDateTime &cardEdited);
 
     // Copy & Assignment
     Card(const Card &other);
     Card& operator = (const Card &other);
 
     // GETTERS
-    int getInAlbumMID() const;
+    int getAlbumMID() const;
     int getCardMID() const;
     QString getCardID() const;
-    QString getName() const;
+    QString getCardName() const;
     QString getImageURL() const;
     QString getSubtype() const;
     QString getSupertype() const;
@@ -53,17 +56,19 @@ public:
     QString getArtist() const;
     QString getRarity() const;
     QString getSeries() const;
-    QString getSet() const;
+    QString getSetName() const;
     QString getSetCode() const;
     QString getCondition() const;
     QString getStatus() const;
     bool getLoaded() const;
+    QDateTime getCardAdded() const;
+    QDateTime getCardEdited() const;
 
     // SETTERS
-    void setInAlbumMID(const int inAlbumMID);
-    void setCardMID(const int newCardMID);
-    void setCardID(const QString newCardID);
-    void setName(const QString newName);
+    void setAlbumMID(const int albumMID);
+    void setCardMID(const int cardMID);
+    void setCardID(const QString cardID);
+    void setCardName(const QString newCardName);
     void setImageURL(const QString newImageURL);
     void setSubtype(const QString newSubtype);
     void setSupertype(const QString newSupertype);
@@ -71,11 +76,12 @@ public:
     void setArtist(const QString newArtist);
     void setRarity(const QString newRarity);
     void setSeries(const QString newSeries);
-    void setSet(const QString newSet);
+    void setSetName(const QString newSetName);
     void setSetCode(const QString newSetCode);
     void setCondition(const QString newCondition);
     void setStatus(const QString newStatus);
     void setLoaded(const bool loaded);
+    void setCardEdited();
 };
 
 #endif // CARD_H

@@ -5,14 +5,14 @@ import PokeApp.Classes.Core 1.0
 import "./"
 
 Item {
-    id: cardsPageItem
+    id: cardsPage
     property int cId: 0
     property string fullScreenCard
 
 
     // Page
     Rectangle {
-        id: cardsPage
+        id: cardsPageItem
         anchors.fill: parent
         color: '#ecf0f1'
         state: "GridView"

@@ -1,5 +1,5 @@
 
-QT += qml quick core widgets network quickcontrols2
+QT += qml quick core sql gui widgets network quickcontrols2
 
 LIBS += -LC:/OpenSSL-Win64/lib -llibeay32
 LIBS += -LC:/OpenSSL-Win64/lib -lssleay32
@@ -18,7 +18,9 @@ SOURCES += main.cpp \
     card.cpp \
     cardsmanager.cpp \
     mainnetworkmanager.cpp \
-    albums.cpp
+    albums.cpp \
+    albumcardsdelegate.cpp \
+    resourceimageprovider.cpp
 
 RESOURCES += qml.qrc
 
@@ -41,6 +43,8 @@ HEADERS += \
     card.h \
     cardsmanager.h \
     mainnetworkmanager.h \
-    albums.h
+    albums.h \
+    albumcardsdelegate.h \
+    resourceimageprovider.h
 
 DISTFILES +=

@@ -24,5 +24,9 @@
         <file>GUI/titleShadow.png</file>
         <file>GUI/busy.png</file>
         <file>GUI/emptyCard.png</file>
+        <file>GUI/pokeLoader50.gif</file>
+        <file>GUI/pokeLoader100.gif</file>
+        <file>GUI/pokeLoader200.gif</file>
+        <file>GUI/pokeLoaderOriginal.gif</file>
     </qresource>
 </RCC>

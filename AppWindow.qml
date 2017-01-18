@@ -20,10 +20,10 @@ Rectangle {
         currentIndex: 0
 
         // Navigation Pages
-        Home {}
-        Library {}
-        Albums {}
-        Cards {}
+        Home { id: homePage }
+        Library { id: libraryPage }
+        Albums { id: albumsPage}
+        Cards { id: cardsPage }
     }
 
     // HEADER

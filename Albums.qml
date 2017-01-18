@@ -4,11 +4,11 @@ import QtQuick.Controls 2.0
 import PokeApp.Classes.Core 1.0
 
 Item {
-    id: albumsPageItem
+    id: albumsPage
 
     // Page
     Rectangle {
-        id: albumsPage
+        id: albumsPageItem
         anchors.fill: parent
         color: '#ecf0f1'
 

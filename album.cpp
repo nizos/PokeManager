@@ -6,6 +6,8 @@ Album::Album()
     this->albumName = "No name";
     this->albumMID = 0;
     this->cardsManager = nullptr;
+    this->albumAdded = QDateTime::currentDateTime();
+    this->albumEdited = QDateTime::currentDateTime();
 }
 
 
@@ -14,6 +16,8 @@ Album::Album(QString albumName, int albumMID, CardsManager *cardsManager)
     this->albumName = albumName;
     this->albumMID = albumMID;
     this->cardsManager = cardsManager;
+    this->albumAdded = QDateTime::currentDateTime();
+    this->albumEdited = QDateTime::currentDateTime();
 }
 
 Album::~Album()
@@ -40,11 +44,13 @@ int Album::linearSearch(const int cardMID) const
 void Album::setAlbumMID(const int albumMID)
 {
     this->albumMID = albumMID;
+    this->setAlbumEdited();
 }
 
 void Album::setAlbumName(const QString albumName)
 {
     this->albumName = albumName;
+    this->setAlbumEdited();
 }
 
 // Album Getters
@@ -56,6 +62,16 @@ int Album::getAlbumMID() const
 QString Album::getAlbumName() const
 {
     return this->albumName;
+}
+
+QDateTime Album::getAlbumAdded() const
+{
+    return this->albumAdded;
+}
+
+QDateTime Album::getAlbumEdited() const
+{
+    return this->albumEdited;
 }
 
 
@@ -155,6 +171,7 @@ bool Album::getCardFourLoaded() const
 void Album::addCard(const int cardMID)
 {
     this->cardMIDs << QString::number(cardMID);
+    this->setAlbumEdited();
 }
 
 void Album::removeCard(const int cardMID)
@@ -166,4 +183,11 @@ void Album::removeCard(const int cardMID)
         throw exc;
     }
     this->cardMIDs.removeAt(pos);
+    this->setAlbumEdited();
 }
+
+void Album::setAlbumEdited()
+{
+    this->albumEdited  = QDateTime::currentDateTime();
+}
+
