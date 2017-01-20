@@ -8,7 +8,7 @@ class CardsSQLModel : public QSqlQueryModel
 public:
     enum Roles {
         CardMIDRole = Qt::UserRole + 1, CardAlbumMIDRole, CardIDRole, CardNameRole, CardImageURLRole, CardSubtypeRole, CardSupertypeRole, CardNumberRole, CardArtistRole, CardRarityRole, CardSeriesRole, CardSetNameRole, CardSetCodeRole, CardStatusRole, CardConditionRole, CardAddedRole, CardEditedRole};
-    explicit CardsSQLModel(QObject *parent);
+    explicit CardsSQLModel(QObject *parent = 0);
 
 
     void setQuery(const QString &query, const QSqlDatabase &db = QSqlDatabase());

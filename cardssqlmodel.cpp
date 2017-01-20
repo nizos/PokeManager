@@ -70,10 +70,6 @@ QVariant CardsSQLModel::data(const QModelIndex &index, int role) const
     return value;
 }
 
-CardsSQLModel::~CardsSQLModel()
-{
-
-}
 
 //QHash<int, QByteArray> CardsSQLModel::roleNames() const
 //{
