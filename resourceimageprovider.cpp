@@ -1,6 +1,6 @@
 #include "resourceimageprovider.h"
 
-ResourceImageProvider::ResourceImageProvider(QObject *parent) :QQuickImageProvider(QQuickImageProvider::Image)
+ResourceImageProvider::ResourceImageProvider(QObject *parent) :QQuickImageProvider(QQuickImageProvider::Image,QQmlImageProviderBase::ForceAsynchronousImageLoading)
 {
     this->manager = new QNetworkAccessManager();
 }

@@ -8,6 +8,7 @@
 #include <QDateTime>
 #include <QtSql>
 #include "app.h"
+#include "cardssqlmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,16 +16,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QQuickStyle::setStyle("Material");
 
-    QString serverName = "LOCALHOST\\SQLEXPRESS";
-    QString dbName = "pokeManager";
-    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
 
-    db.setConnectOptions();
-    QString dsn = QString("DRIVER={SQL SERVER};SERVER=%1;DATABASE=%2;Trusted_Connection=Yes;").arg(serverName).arg(dbName);
-    db.setDatabaseName(dsn);
-
-    if(db.open())
-    {
+//    if(db.open())
+//    {
 //        // ALBUMS
 //        qDebug() << "Opened!";
 //        QString insertAlbumCommand = "INSERT INTO [dbo].[Albums]([albumMID],[albumName],[albumAdded],[albumEdited]) VALUES(:albumMID,:albumName,:albumAdded,:albumEdited);";
@@ -178,60 +172,70 @@ int main(int argc, char *argv[])
 //        qDebug() << "\nDone Inserting Albums!\n";
 
 
-        // VIEW ALBUMS
-        qDebug() << "\nShowing Albums!";
-        QSqlQuery qryViewAlbums;
-        if(qryViewAlbums.exec("SELECT [albumMID],[albumName],[albumAdded],[albumEdited] FROM [dbo].[Albums]"))
-        {
-            int count = 1;
-            while(qryViewAlbums.next())
-            {
-                qDebug() << "\nShowing Album " << count << ":";
-                qDebug() << "Album MID: " << qryViewAlbums.value(0).toString();
-                qDebug() << "Album name: " << qryViewAlbums.value(1).toString();
-                qDebug() << "Album added on: " << qryViewAlbums.value(2).toString();
-                qDebug() << "Album last edited: " << qryViewAlbums.value(3).toString();
-            }
-        }
+//        // VIEW ALBUMS
+//        qDebug() << "\nShowing Albums!";
+//        QSqlQuery qryViewAlbums;
+//        if(qryViewAlbums.exec("SELECT [albumMID],[albumName],[albumAdded],[albumEdited] FROM [dbo].[Albums]"))
+//        {
+//            int count = 1;
+//            while(qryViewAlbums.next())
+//            {
+//                qDebug() << "\nShowing Album " << count << ":";
+//                qDebug() << "Album MID: " << qryViewAlbums.value(0).toString();
+//                qDebug() << "Album name: " << qryViewAlbums.value(1).toString();
+//                qDebug() << "Album added on: " << qryViewAlbums.value(2).toString();
+//                qDebug() << "Album last edited: " << qryViewAlbums.value(3).toString();
+//            }
+//        }
 
-        // VIEW CARDS
-        qDebug() << "\nShowing Cards!";
-        QSqlQuery qryViewCards;
-        if(qryViewCards.exec("SELECT [cardMID],[albumMID],[cardID],[name],[imageURL],[subtype],[supertype],[number],[artist],[rarity],[series],[setName],[setCode],[condition],[status],[loaded],[cardAdded],[cardEdited] FROM [dbo].[Cards]"))
-        {
-            int count = 1;
-            while(qryViewCards.next())
-            {
-                qDebug() << "\nShowing Card " << count << ":";
-                qDebug() << "Card MID: " << qryViewCards.value(0).toString();
-                qDebug() << "In Album MID: " << qryViewCards.value(1).toString();
-                qDebug() << "Card ID: " << qryViewCards.value(2).toString();
-                qDebug() << "card name: " << qryViewCards.value(3).toString();
-                qDebug() << "card image URL: " << qryViewCards.value(4).toString();
-                qDebug() << "card subtype: " << qryViewCards.value(5).toString();
-                qDebug() << "card supertype: " << qryViewCards.value(6).toString();
-                qDebug() << "card number: " << qryViewCards.value(7).toString();
-                qDebug() << "card artist: " << qryViewCards.value(8).toString();
-                qDebug() << "card rarity: " << qryViewCards.value(9).toString();
-                qDebug() << "card series: " << qryViewCards.value(10).toString();
-                qDebug() << "card setName: " << qryViewCards.value(11).toString();
-                qDebug() << "card setCode: " << qryViewCards.value(12).toString();
-                qDebug() << "card condition: " << qryViewCards.value(13).toString();
-                qDebug() << "card status: " << qryViewCards.value(14).toString();
-                qDebug() << "card loaded: " << qryViewCards.value(15).toString();
-                qDebug() << "card added on: " << qryViewCards.value(16).toString();
-                qDebug() << "card last edited: " << qryViewCards.value(17).toString();
-            }
-        }
+//        // VIEW CARDS
+//        qDebug() << "\nShowing Cards!";
+//        QSqlQuery qryViewCards;
+//        if(qryViewCards.exec("SELECT [cardMID],[albumMID],[cardID],[name],[imageURL],[subtype],[supertype],[number],[artist],[rarity],[series],[setName],[setCode],[condition],[status],[loaded],[cardAdded],[cardEdited] FROM [dbo].[Cards]"))
+//        {
+//            int count = 1;
+//            while(qryViewCards.next())
+//            {
+//                qDebug() << "\nShowing Card " << count << ":";
+//                qDebug() << "Card MID: " << qryViewCards.value(0).toString();
+//                qDebug() << "In Album MID: " << qryViewCards.value(1).toString();
+//                qDebug() << "Card ID: " << qryViewCards.value(2).toString();
+//                qDebug() << "card name: " << qryViewCards.value(3).toString();
+//                qDebug() << "card image URL: " << qryViewCards.value(4).toString();
+//                qDebug() << "card subtype: " << qryViewCards.value(5).toString();
+//                qDebug() << "card supertype: " << qryViewCards.value(6).toString();
+//                qDebug() << "card number: " << qryViewCards.value(7).toString();
+//                qDebug() << "card artist: " << qryViewCards.value(8).toString();
+//                qDebug() << "card rarity: " << qryViewCards.value(9).toString();
+//                qDebug() << "card series: " << qryViewCards.value(10).toString();
+//                qDebug() << "card setName: " << qryViewCards.value(11).toString();
+//                qDebug() << "card setCode: " << qryViewCards.value(12).toString();
+//                qDebug() << "card condition: " << qryViewCards.value(13).toString();
+//                qDebug() << "card status: " << qryViewCards.value(14).toString();
+//                qDebug() << "card loaded: " << qryViewCards.value(15).toString();
+//                qDebug() << "card added on: " << qryViewCards.value(16).toString();
+//                qDebug() << "card last edited: " << qryViewCards.value(17).toString();
+//            }
+//        }
 
 
-        qDebug() << "Closing!";
-        db.close();
-    }
-    else
-    {
-        qDebug() << "Error: " << db.lastError();
-    }
+//        qDebug() << "Closing!";
+//        db.close();
+//    }
+//    else
+//    {
+//        qDebug() << "Error: " << db.lastError();
+//    }
+
+    QString serverName = "LOCALHOST\\SQLEXPRESS";
+    QString dbName = "pokeManager";
+    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
+
+    db.setConnectOptions();
+    QString dsn = QString("DRIVER={SQL SERVER};SERVER=%1;DATABASE=%2;Trusted_Connection=Yes;").arg(serverName).arg(dbName);
+    db.setDatabaseName(dsn);
+    db.open();
+
 
     // Core classes
     qmlRegisterType<App>("PokeApp.Classes.Core", 1, 0, "App");
@@ -240,8 +244,14 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
 
+    CardsSQLModel *cardsSQLModel = new CardsSQLModel(qApp);
+    cardsSQLModel->setQuery("SELECT [cardMID],[albumMID],[cardID],[name],[imageURL],[subtype],[supertype],[number],[artist],[rarity],[series],[setName],[setCode],[condition],[status],[loaded],[cardAdded],[cardEdited] FROM [dbo].[Cards]",db);
+//    cardsSQLModel->setQuery("SELECT * FROM Cards");
+
     // Context properties
-    engine.addImageProvider(QLatin1String("resourceImageProvider"), mainApp.getResourceImageProvider());
+    engine.addImageProvider(QLatin1String("rip"), mainApp.getResourceImageProvider());
+    QQmlContext *ctxt0 = engine.rootContext();
+    ctxt0->setContextProperty("cardsSQLModel", cardsSQLModel);
     QQmlContext *ctxt1 = engine.rootContext();
     ctxt1->setContextProperty("mainApp", &mainApp);
     QQmlContext *ctxt2 = engine.rootContext();
@@ -250,7 +260,7 @@ int main(int argc, char *argv[])
     ctxt3->setContextProperty("MyAlbumsModel", mainApp.getAlbumsModel());
 
 
-
+//    db.close();
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 
     return app.exec();

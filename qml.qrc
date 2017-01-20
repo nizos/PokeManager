@@ -18,6 +18,7 @@
         <file>SubHeaderLibraryMenu.qml</file>
         <file>LoadingCard.qml</file>
         <file>ThumbNail.qml</file>
+        <file>CardsItemDelegate.qml</file>
     </qresource>
     <qresource prefix="/gui">
         <file>GUI/subMenuShadow.png</file>

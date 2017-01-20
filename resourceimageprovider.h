@@ -8,6 +8,8 @@
 #include <QObject>
 #include <QPixmap>
 #include <QImage>
+#include <QHash>
+#include <QSignalMapper>
 
 
 class ResourceImageProvider : public QObject, public QQuickImageProvider
@@ -18,16 +20,12 @@ public:
     ~ResourceImageProvider();
 
     QImage requestImage(const QString & id, QSize * size, const QSize & requestedSize);
+//    QImage requestImage(const QString & id, QSize * size, const QSize & requestedSize);
 
-//public slots:
-//    void imageFromURL(QImage *image);
 
-//signals:
-//    void imageReady(const QString &id);
 
 protected:
     QNetworkAccessManager *manager;
-//    QImage *image;
 };
 
 #endif // RESOURCEIMAGEPROVIDER_H
