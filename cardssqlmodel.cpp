@@ -70,6 +70,10 @@ QVariant CardsSQLModel::data(const QModelIndex &index, int role) const
     return value;
 }
 
+//void CardsSQLModel::cardImageUpdated(QString cardMID, QImage cardImage)
+//{
+
+//}
 
 //QHash<int, QByteArray> CardsSQLModel::roleNames() const
 //{

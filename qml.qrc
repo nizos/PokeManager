@@ -29,5 +29,15 @@
         <file>GUI/pokeLoader100.gif</file>
         <file>GUI/pokeLoader200.gif</file>
         <file>GUI/pokeLoaderOriginal.gif</file>
+        <file>GUI/xy7-50.png</file>
+        <file>GUI/xy7-51.png</file>
+        <file>GUI/xy7-52.png</file>
+        <file>GUI/xy7-53.png</file>
+        <file>GUI/xy7-54.png</file>
+        <file>GUI/xy7-55.png</file>
+        <file>GUI/xy7-56.png</file>
+        <file>GUI/xy7-57.png</file>
+        <file>GUI/xy7-58.png</file>
+        <file>GUI/xy7-59.png</file>
     </qresource>
 </RCC>

@@ -44,6 +44,7 @@ App::App(QObject *parent): QObject(parent)
     this->albumsModel->setCardsManager(cardsManager);
     this->albumCardsModel->setAlbumsManager(albumsManager);
     this->albumCardsModel->setCardsManager(cardsManager);
+    this->resourceImageProvider->setSQLDatabase(&db);
     this->cardsSQLModel->setQuery("SELECT [cardMID],[albumMID],[cardID],[name],[imageURL],[subtype],[supertype],[number],[artist],[rarity],[series],[setName],[setCode],[condition],[status],[loaded],[cardAdded],[cardEdited] FROM [dbo].[Cards]",db);
 
     /// Signals & Slots
@@ -63,12 +64,12 @@ App::App(QObject *parent): QObject(parent)
     albumsManager->addAlbum("My Favorites");
 
     // Cards
-    albumsManager->addCard(1001,"xy7-5");
-    albumsManager->addCard(1001,"xy7-6");
-    albumsManager->addCard(1001,"xy7-7");
-    albumsManager->addCard(1001,"xy7-8");
-    albumsManager->addCard(1002,"xy7-13");
-    albumsManager->addCard(1002,"xy7-14");
+    albumsManager->addCard(1001,"xy7-51");
+    albumsManager->addCard(1001,"xy7-52");
+    albumsManager->addCard(1001,"xy7-53");
+    albumsManager->addCard(1001,"xy7-54");
+    albumsManager->addCard(1002,"xy7-55");
+    albumsManager->addCard(1002,"xy7-56");
 
     // Views
     albumCardsModel->showAlbum(1001);

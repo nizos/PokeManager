@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     albumcardsdelegate.cpp \
     resourceimageprovider.cpp \
     imagehandler.cpp \
-    cardssqlmodel.cpp
+    cardssqlmodel.cpp \
+    cardssqlmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -49,6 +50,7 @@ HEADERS += \
     albumcardsdelegate.h \
     resourceimageprovider.h \
     imagehandler.h \
-    cardssqlmodel.h
+    cardssqlmodel.h \
+    cardssqlmanager.h
 
 DISTFILES +=
