@@ -16,7 +16,7 @@ Item {
 
         // Albums GridView
         GridView{
-            property int albumsInApp: MyAlbumsModel.rowCount()
+            property int albumsInApp: albumsSQLManager.getNrOfAlbums();
             id: albumsGridView
             header:  Rectangle { height: 30 }
             footer: Rectangle {height: 80}
@@ -27,17 +27,21 @@ Item {
             height: parent.height
             cellHeight: 310
             cellWidth: 250
-            model: MyAlbumsModel
+            model: albumsSQLModel
             clip: true
             delegate: AlbumsView {}
             z: 0
         }
         Item {
             Connections {
-                target: MyAlbumsModel
+                target: albumsSQLManager
                 onAlbumAdded:
                 {
-                    albumsGridView.albumsInApp = nrOfAlbums
+                    albumsGridView.albumsInApp = albumsSQLManager.getNrOfAlbums();
+                }
+                onAlbumRemoved:
+                {
+                    albumsGridView.albumsInApp = albumsSQLManager.getNrOfAlbums();
                 }
             }
         }

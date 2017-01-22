@@ -1,6 +1,6 @@
 #include "resourceimageprovider.h"
 
-ResourceImageProvider::ResourceImageProvider(QObject *parent)  :QQuickImageProvider(QQuickImageProvider::Image,QQuickImageProvider::ForceAsynchronousImageLoading)
+ResourceImageProvider::ResourceImageProvider(QObject *parent)  :QQuickImageProvider(QQuickImageProvider::Image), QObject(parent)
 {
     this->manager = new QNetworkAccessManager(this);
     connect(&m_mapper, SIGNAL(mapped(QString)), this,
@@ -25,82 +25,76 @@ void ResourceImageProvider::setSQLDatabase(QSqlDatabase* db)
 
 QImage ResourceImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
-//    QString serverName = "LOCALHOST\\SQLEXPRESS";
-//    QString dbName = "pokeManager";
-//    this->m_db = QSqlDatabase::addDatabase("QODBC");
-//    this->m_db.setConnectOptions();
-//    QString dsn = QString("DRIVER={SQL SERVER};SERVER=%1;DATABASE=%2;Trusted_Connection=Yes;").arg(serverName).arg(dbName);
-//    m_db.setDatabaseName(dsn);
-//    if(db->open())
-//    {
-//        qDebug() << "Connection to database opened.";
-        // Check for image in database
-        QString addQuote = "'" + id + "'";
-        QString qslSelect = "SELECT * FROM CardImages2 WHERE imageURL = " + addQuote;
-        qDebug() << qslSelect;
-        QSqlQuery findCard;
-        if(findCard.exec(qslSelect))
+    // Check for image in database
+    QString addQuote = "'" + id + "'";
+    QString qslSelect = "SELECT * FROM CardImages2 WHERE imageURL=:imageURL";
+    QSqlQuery findCard;
+    findCard.prepare(qslSelect);
+    findCard.bindValue(":imageURL",id);
+    if(findCard.exec())
+    {
+        if(findCard.first())
         {
             // Image found in database
-            if(findCard.first())
-            {
-                qDebug() << "Image found in db.";
-                QByteArray outByteArray = findCard.value(1).toByteArray();
-                QPixmap outPixmap = QPixmap();
-                outPixmap.loadFromData( outByteArray );
-                QImage cardImage;
-                cardImage = outPixmap.toImage();
-//                m_db.close();
-                return cardImage;
-            }
-            // Image not found in database
-            else
-            {
-                // Request Image from Network
-//                m_db.close();
-                qDebug() << "Image not found in db.";
-                QUrl url(id);
-                QNetworkReply* reply = manager->get(QNetworkRequest(url));
-                connect(reply, SIGNAL(finished()), &m_mapper, SLOT(map()));
-                m_replies.insert(id, reply);
-                m_mapper.setMapping(reply, id);
-
-                // return temporary image place holder
-                QPixmap tempPixmap;
-                tempPixmap.load(":/gui/GUI/emptyCard.png");
-                QImage temp;
-                temp = tempPixmap.toImage();
-                emit cardAdded(id);
-                return temp;
-            }
+            qDebug() << "Image found in db.";
+            QByteArray outByteArray = findCard.value(1).toByteArray();
+            QPixmap outPixmap = QPixmap();
+            outPixmap.loadFromData( outByteArray );
+            QImage cardImage;
+            cardImage = outPixmap.toImage();
+//            cardImage.scaledToHeight(size->height());
+//            cardImage.scaledToWidth(size->width());
+            return cardImage;
         }
-        // Couldn't perform SQLQuery
         else
         {
+            // Image not found in database
+            qDebug() << "Image not found in db.";
 
-            // Print database error
-            qDebug() << "Error: Couldn't perform SQLQuery.\n" << db->lastError();
-//            m_db.close();
+            // Request Image from Network
+            QUrl url(id);
+            QNetworkReply* reply = manager->get(QNetworkRequest(url));
+            connect(reply, SIGNAL(finished()), &m_mapper, SLOT(map()));
+            m_replies.insert(id, reply);
+            m_mapper.setMapping(reply, id);
+
             // return temporary image place holder
             QPixmap tempPixmap;
             tempPixmap.load(":/gui/GUI/emptyCard.png");
             QImage temp;
             temp = tempPixmap.toImage();
-            emit cardAdded(id);
+//            temp.scaledToHeight(size->height());
+//            temp.scaledToWidth(size->width());
+//            emit cardAdded(id);
             return temp;
         }
     }
-//    else
-//    {
-//        qDebug() << "ERROR: Couldn't connect to database!\n" << m_db.lastError();
-//        // return temporary image place holder
-//        QPixmap tempPixmap;
-//        tempPixmap.load(":/gui/GUI/emptyCard.png");
-//        QImage temp;
-//        temp = tempPixmap.toImage();
+    else
+    {
+        // Couldn't perform SQLQuery
+        qDebug() << "Error: Couldn't perform SQLQuery.\n" << db->lastError();
+        QPixmap tempPixmap;
+        tempPixmap.load(":/gui/GUI/emptyCard.png");
+        QImage temp;
+        temp = tempPixmap.toImage();
+//        temp.scaledToHeight(size->height());
+//        temp.scaledToWidth(size->width());
 //        emit cardAdded(id);
-//        return temp;
-//    }
+        return temp;
+    }
+}
+
+//void ResourceImageProvider::addCardImage(QString imageURL, int crdID, int albID)
+//{
+//    // Request Image from Network
+//    QUrl url(imageURL);
+//    QNetworkReply* reply = manager->get(QNetworkRequest(url));
+//    reply->setProperty("crdID", crdID);
+//    reply->setProperty("albID", albID);
+//    connect(reply, SIGNAL(finished()), &m_mapper, SLOT(map()));
+//    m_replies.insert(imageURL, reply);
+//    m_mapper.setMapping(reply, imageURL);
+
 //}
 
 void ResourceImageProvider::mappedReply(QString id)
@@ -108,18 +102,43 @@ void ResourceImageProvider::mappedReply(QString id)
     QNetworkReply *reply = m_replies.take(id);
     const QByteArray data = reply->readAll();
 
+
+
+
     QImage img;
     if(img.loadFromData(data,"PNG"))
     {
         qDebug() << "Image loaded";
+        // Insert image into database
+        QString addQuote = "'" + id + "'";
+        QString qslUpdate = "UPDATE CardImages2 SET imageData=:imageData WHERE imageURL=:imageURL";
+        QSqlQuery updateCard;
+        updateCard.prepare(qslUpdate);
+        updateCard.bindValue(":imageData",img);
+        updateCard.bindValue(":imageURL",id);
+        if(updateCard.exec())
+        {
+//            if(reply->property("crdID").isValid())
+//            {
+//                qDebug() << "Requested Card Image Added.";
+//                emit cardImageAdded(reply->property("albID").toInt(), reply->property("crdID").toInt());
+//            }
+//            else
+//            {
+                emit cardUpdated(id);
+                qDebug() << "Card Image Added.";
+//            }
+        }
+        else
+        {
+            qDebug() << "ERROR: Couldn't update imageData for card: " << id;
+            qDebug() << db->lastError();
+        }
     }
     else
     {
-        qDebug() << "ERROR: Couldn't load image: " << id;;
+        qDebug() << "ERROR: Couldn't load image: " << id;
     }
-
-//    cardsSQLModel->
-    emit cardUpdated(id);
     reply->deleteLater();
 }
 

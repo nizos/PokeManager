@@ -13,7 +13,9 @@
 #include "abstractalbummodel.h"
 #include "albumsmodel.h"
 #include "cardssqlmodel.h"
-
+#include "cardssqlmanager.h"
+#include "albumssqlmanager.h"
+#include "albumssqlmodel.h"
 class App: public QObject
 {
     Q_OBJECT
@@ -25,15 +27,22 @@ class App: public QObject
     // Managers
     Q_PROPERTY(AlbumsManager* albumsManager READ getAlbumsManager)
     Q_PROPERTY(CardsManager* cardsManager READ getCardsManager)
+    Q_PROPERTY(CardsSQLManager* cardsSQLManager READ getCardsSQLManager)
+    Q_PROPERTY(AlbumsSQLManager* albumsSQLManager READ getAlbumsSQLManager)
 
     // Models
     Q_PROPERTY(AlbumsModel* albumsModel READ getAlbumsModel)
     Q_PROPERTY(AlbumCardsModel* albumCardsModel READ getAlbumCardsModel)
     Q_PROPERTY(CardsSQLModel *cardsSQLModel READ getCardsSQLModel)
+    Q_PROPERTY(AlbumsSQLModel *albumsSQLModel READ getAlbumsSQLModel)
 
 public:
     explicit App(QObject *parent = 0);
     ~App();
+
+    Q_INVOKABLE void currentAlbumChanged(int albID);
+    Q_INVOKABLE void currentCardChanged(int crdID);
+    Q_INVOKABLE void showAlbum(int albID);
 
     // Initializers
     void startInitializations();
@@ -46,13 +55,19 @@ public:
 
     AlbumsManager* getAlbumsManager() const;
     CardsManager* getCardsManager() const;
+    CardsSQLManager* getCardsSQLManager() const;
+    AlbumsSQLManager* getAlbumsSQLManager() const;
 
     AlbumsModel* getAlbumsModel() const;
     AlbumCardsModel* getAlbumCardsModel() const;
     CardsSQLModel* getCardsSQLModel() const;
+    AlbumsSQLModel* getAlbumsSQLModel() const;
 
 public slots:
     void dataFromNetwork(QByteArray data);
+    void refreshCardsSQLModel(int albID);
+    void refreshCardsSQLModel();
+    void refreshAlbumsSQLModel();
 
 private:
     MainNetworkManager* networkManager;
@@ -60,12 +75,18 @@ private:
 
     AlbumsManager* albumsManager;
     CardsManager* cardsManager;
+    CardsSQLManager* cardsSQLManager;
+    AlbumsSQLManager* albumsSQLManager;
 
     AlbumsModel* albumsModel;
     AlbumCardsModel* albumCardsModel;
     CardsSQLModel *cardsSQLModel;
+    AlbumsSQLModel* albumsSQLModel;
 
     QSqlDatabase db;
+
+    int currentCardID;
+    int currentAlbumID;
 
 };
 

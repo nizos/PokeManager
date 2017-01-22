@@ -1,8 +1,13 @@
 #ifndef CARDSSQLMANAGER_H
 #define CARDSSQLMANAGER_H
 #include "resourceimageprovider.h"
-#include <QSqlDatabase>
 #include "card.h"
+#include <QSqlDatabase>
+#include <QNetworkAccessManager>
+#include <QHash>
+#include <QDateTime>
+#include <QSignalMapper>
+#include <QString>
 #include <QObject>
 #include <QSQl>
 
@@ -12,27 +17,30 @@ class CardsSQLManager : public QObject
     Q_OBJECT
 
 public:
-    CardsSQLManager();
-
-    void addCard(QString cardReqId);
-    void removeCard();
+    CardsSQLManager(QObject* parent = 0);
+    void setDB(QSqlDatabase* db);
+    void setResourceImageProvider(ResourceImageProvider* resourceImageProvider);
+    void addCard(int albID, QString crdReq);
+    void removeCard(int albID, int crdID);
 
 signals:
-    void cardAdded(QString cardReqId);
-    void cardUpdated(QString cardReqId);
-    void mapped(QString cardReqId);
+    void cardAdded(int albID, int crdID);
+    void cardUpdated(int albID, int crdID);
+    void cardRemoved(int albID, int crdID);
+    void albumUpdated(int albID);
+    void mapped(int albID, int crdID);
 
 public slots:
-    void mappedReply(QString cardReqId);
+//    void cardImageAdded(int albID, int crdID);
+    void mappedReply(int crdID);
 
 private:
-    int cardMIDs;
     QSqlDatabase* db;
     QSignalMapper m_mapper;
     CardsSQLModel* cardsSQLModel;
     QNetworkAccessManager *manager;
 
-    QHash<QString, QNetworkReply*> m_replies;
+    QHash<int, QNetworkReply*> m_replies;
     ResourceImageProvider* resourceImageProvider;
 };
 

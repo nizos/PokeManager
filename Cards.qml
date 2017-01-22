@@ -71,7 +71,7 @@ Item {
 
         // Cards GridView
         GridView{
-            property int cardsInAlbum: MyModel.rowCount()
+            property int cardsInAlbum: albumsSQLManager.getNrOfCards(appWindow.currentAlbum)
             id: cardsGridView
             header:  Rectangle { height: 30 }
             footer: Rectangle {height: 80}
@@ -82,7 +82,7 @@ Item {
             height: parent.height
             cellHeight: 350
             cellWidth: 253
-            model: MyModel
+            model: cardsSQLModel
             clip: true
             delegate: CardsView {id: cardsView}
             z: 0
@@ -90,10 +90,14 @@ Item {
 
         Item {
             Connections {
-                target: MyModel
+                target: albumsSQLManager
                 onCardAdded:
                 {
-                    cardsGridView.cardsInAlbum = nrOfCards
+                    cardsGridView.cardsInAlbum = albumsSQLManager.getNrOfCards(appWindow.currentAlbum);
+                }
+                onCardRemoved:
+                {
+                    cardsGridView.cardsInAlbum = albumsSQLManager.getNrOfCards(appWindow.currentAlbum);
                 }
             }
         }

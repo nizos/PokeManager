@@ -71,7 +71,7 @@ Item {
                     placeholderText: qsTr("Card ID")
                     onAccepted:
                     {
-                        mainApp.albumsManager.addCard(appWindow.currentAlbum,addTextField.text);
+                        albumsSQLManager.addCard(appWindow.currentAlbum, addTextField.text);
                     }
                 }
             }
@@ -89,7 +89,7 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            mainApp.albumsManager.addCard(appWindow.currentAlbum,addTextField.text);
+                            albumsSQLManager.addCard(appWindow.currentAlbum, addTextField.text);
                         }
                     }
                 }

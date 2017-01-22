@@ -71,7 +71,7 @@ Item {
                     placeholderText: qsTr("Album name")
                     onAccepted:
                     {
-                        mainApp.albumsManager.addAlbum(addTextField.text);
+                        albumsSQLManager.addAlbum(addTextField.text);
                     }
                 }
             }
@@ -89,7 +89,7 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            mainApp.albumsManager.addAlbum(addTextField.text);
+                            albumsSQLManager.addAlbum(addTextField.text);
                         }
                     }
                 }

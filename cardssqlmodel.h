@@ -20,8 +20,10 @@ public:
 
 signals:
 
-public slots:
-
+//public slots:
+//    void cardAdded(QString imageURL);
+//    void cardRemoved(QString imageURL);
+//    void cardUpdated(QString imageURL);
 private:
     void generateRoleNames();
     QHash<int, QByteArray> m_roleNames;

@@ -29,9 +29,15 @@ int main(int argc, char *argv[])
     QQmlContext *ctxt1 = engine.rootContext();
     ctxt1->setContextProperty("mainApp", &mainApp);
     QQmlContext *ctxt2 = engine.rootContext();
-    ctxt2->setContextProperty("MyModel", mainApp.getAlbumCardsModel());
+    ctxt2->setContextProperty("myModel", mainApp.getAlbumCardsModel());
     QQmlContext *ctxt3 = engine.rootContext();
-    ctxt3->setContextProperty("MyAlbumsModel", mainApp.getAlbumsModel());
+    ctxt3->setContextProperty("myAlbumsModel", mainApp.getAlbumsModel());
+    QQmlContext *ctxt4 = engine.rootContext();
+    ctxt4->setContextProperty("cardsSQLManager", mainApp.getCardsSQLManager());
+    QQmlContext *ctxt5 = engine.rootContext();
+    ctxt5->setContextProperty("albumsSQLManager", mainApp.getAlbumsSQLManager());
+    QQmlContext *ctxt6 = engine.rootContext();
+    ctxt6->setContextProperty("albumsSQLModel",  mainApp.getAlbumsSQLModel());
 
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
     return app.exec();

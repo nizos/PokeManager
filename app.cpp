@@ -4,6 +4,9 @@
 App::App(QObject *parent): QObject(parent)
 {
     /// Initialize
+    this->currentAlbumID = 1;
+    this->currentCardID = 1;
+
     // Providers
     this->networkManager = new MainNetworkManager();
     this->resourceImageProvider = new ResourceImageProvider();
@@ -11,11 +14,14 @@ App::App(QObject *parent): QObject(parent)
     // Managers
     this->albumsManager = new AlbumsManager();
     this->cardsManager = new CardsManager();
+    this->cardsSQLManager = new CardsSQLManager();
+    this->albumsSQLManager = new AlbumsSQLManager();
 
     // Models
     this->albumsModel = new AlbumsModel();
     this->albumCardsModel = new AlbumCardsModel();
     this->cardsSQLModel = new CardsSQLModel();
+    this->albumsSQLModel = new AlbumsSQLModel();
 
     /// Connect
     // Database
@@ -35,17 +41,25 @@ App::App(QObject *parent): QObject(parent)
     qmlRegisterType<CardsManager>("PokeApp.Classes.Core", 1, 0, "CardsManager");
     qmlRegisterType<AlbumCardsModel>("PokeApp.Classes.Core", 1, 0, "AlbumCardsModel");
     qmlRegisterType<AlbumsModel>("PokeApp.Classes.Core", 1, 0, "AlbumsModel");
-    qmlRegisterType<CardsSQLModel>("PokeApp.Classes.Core", 1, 0, "cardsSQLModel");
-
+    qmlRegisterType<CardsSQLModel>("PokeApp.Classes.Core", 1, 0, "CardsSQLModel");
+    qmlRegisterType<AlbumsSQLModel>("PokeApp.Classes.Core", 1, 0, "AlbumsSQLModel");
+    qmlRegisterType<AlbumsSQLManager>("PokeApp.Classes.Core", 1, 0, "AlbumsSQLManager");
 
     // Connect classes
+    this->albumsSQLManager->setDB(&db);
+    this->albumsSQLManager->setCardsSQLManager(cardsSQLManager);
+    this->cardsSQLManager->setDB(&db);
+    this->cardsSQLManager->setResourceImageProvider(resourceImageProvider);
     this->albumsManager->setCardsManager(cardsManager);
     this->albumsModel->setAlbumsManager(albumsManager);
     this->albumsModel->setCardsManager(cardsManager);
     this->albumCardsModel->setAlbumsManager(albumsManager);
     this->albumCardsModel->setCardsManager(cardsManager);
     this->resourceImageProvider->setSQLDatabase(&db);
-    this->cardsSQLModel->setQuery("SELECT [cardMID],[albumMID],[cardID],[name],[imageURL],[subtype],[supertype],[number],[artist],[rarity],[series],[setName],[setCode],[condition],[status],[loaded],[cardAdded],[cardEdited] FROM [dbo].[Cards]",db);
+
+    this->albumsSQLModel->setQuery("SELECT [ID],[albumName],[albumAdded],[albumEdited] FROM [dbo].[Albums2]",db);
+
+    this->cardsSQLModel->setQuery("SELECT [ID],[albumMID],[cardID],[name],[imageURL],[subtype],[supertype],[number],[artist],[rarity],[series],[setName],[setCode],[condition],[status],[loaded],[cardAdded],[cardEdited] FROM [dbo].[Cards3]",db);
 
     /// Signals & Slots
     // AlbumCards Model
@@ -58,22 +72,58 @@ App::App(QObject *parent): QObject(parent)
     connect(albumsManager, SIGNAL(cardAdded(int,QString)),albumsModel, SLOT(onCardAdded(int,QString)));
     connect(cardsManager, SIGNAL(cardUpdated(int,QString)),albumsModel, SLOT(onCardUpdated(int,QString)));
 
+    connect(resourceImageProvider, SIGNAL(cardUpdated(QString)), this, SLOT(refreshCardsSQLModel()));
+    connect(resourceImageProvider, SIGNAL(cardAdded(QString)), this, SLOT(refreshCardsSQLModel()));
+    connect(resourceImageProvider, SIGNAL(cardRemoved(QString)), this, SLOT(refreshCardsSQLModel()));
+
+    // Cards SQL Manager
+    connect(cardsSQLManager, SIGNAL(cardAdded(int,int)), this, SLOT(refreshCardsSQLModel(int)));
+    connect(cardsSQLManager, SIGNAL(cardAdded(int,int)), this, SLOT(refreshAlbumsSQLModel()));
+
+    connect(cardsSQLManager, SIGNAL(cardUpdated(int,int)), this, SLOT(refreshCardsSQLModel(int)));
+
+    connect(cardsSQLManager, SIGNAL(cardRemoved(int,int)), this, SLOT(refreshCardsSQLModel(int)));
+    connect(cardsSQLManager, SIGNAL(cardRemoved(int,int)), this, SLOT(refreshAlbumsSQLModel()));
+
+    connect(cardsSQLManager, SIGNAL(albumUpdated(int)), this, SLOT(refreshCardsSQLModel(int)));
+    connect(cardsSQLManager, SIGNAL(albumUpdated(int)), this, SLOT(refreshAlbumsSQLModel()));
+
+    // Albums SQL Manager
+    connect(albumsSQLManager, SIGNAL(albumAdded(int)), this, SLOT(refreshCardsSQLModel()));
+    connect(albumsSQLManager, SIGNAL(albumAdded(int)), this, SLOT(refreshAlbumsSQLModel()));
+
+    connect(albumsSQLManager, SIGNAL(albumUpdated(int)), this, SLOT(refreshCardsSQLModel()));
+    connect(albumsSQLManager, SIGNAL(albumUpdated(int)), this, SLOT(refreshAlbumsSQLModel()));
+
+    connect(albumsSQLManager, SIGNAL(albumRemoved(int)), this, SLOT(refreshCardsSQLModel()));
+    connect(albumsSQLManager, SIGNAL(albumRemoved(int)), this, SLOT(refreshAlbumsSQLModel()));
+
+    connect(albumsSQLManager, SIGNAL(cardAdded(int,int)), this, SLOT(refreshCardsSQLModel(int)));
+    connect(albumsSQLManager, SIGNAL(cardAdded(int,int)), this, SLOT(refreshAlbumsSQLModel()));
+
+    connect(albumsSQLManager, SIGNAL(cardUpdated(int,int)), this, SLOT(refreshCardsSQLModel(int)));
+
+    connect(albumsSQLManager, SIGNAL(cardRemoved(int,int)), this, SLOT(refreshCardsSQLModel(int)));
+    connect(albumsSQLManager, SIGNAL(cardRemoved(int,int)), this, SLOT(refreshAlbumsSQLModel()));
+
+//    connect(cardsSQLManager, SIGNAL(cardRemoved(int)), this, SLOT(refreshCardsSQLModel()));
+
     /// Populate
     // Albums
-    albumsManager->addAlbum("My Cards");
-    albumsManager->addAlbum("My Favorites");
+//    albumsManager->addAlbum("My Cards");
+//    albumsManager->addAlbum("My Favorites");
 
     // Cards
-    albumsManager->addCard(1001,"xy7-51");
-    albumsManager->addCard(1001,"xy7-52");
-    albumsManager->addCard(1001,"xy7-53");
-    albumsManager->addCard(1001,"xy7-54");
-    albumsManager->addCard(1002,"xy7-55");
-    albumsManager->addCard(1002,"xy7-56");
+//    albumsManager->addCard(1001,"xy7-51");
+//    albumsManager->addCard(1001,"xy7-52");
+//    albumsManager->addCard(1001,"xy7-53");
+//    albumsManager->addCard(1001,"xy7-54");
+//    albumsManager->addCard(1002,"xy7-55");
+//    albumsManager->addCard(1002,"xy7-56");
 
     // Views
-    albumCardsModel->showAlbum(1001);
-    albumsModel->showAlbums();
+//    albumCardsModel->showAlbum(1001);
+//    albumsModel->showAlbums();
 }
 
 //// Getters
@@ -90,6 +140,11 @@ AlbumsManager* App::getAlbumsManager() const
 CardsManager* App::getCardsManager() const
 {
     return this->cardsManager;
+}
+
+CardsSQLManager* App::getCardsSQLManager() const
+{
+    return this->cardsSQLManager;
 }
 
 AlbumsModel* App::getAlbumsModel() const
@@ -110,6 +165,50 @@ MainNetworkManager* App::getMainNetworkManager() const
 CardsSQLModel* App::getCardsSQLModel() const
 {
     return this->cardsSQLModel;
+}
+
+AlbumsSQLModel* App::getAlbumsSQLModel() const
+{
+    return this->albumsSQLModel;
+}
+
+AlbumsSQLManager* App::getAlbumsSQLManager() const
+{
+    return this->albumsSQLManager;
+}
+
+void App::showAlbum(int albID)
+{
+    qDebug() << "Showing Album: " << albID;
+    this->cardsSQLModel->setQuery("SELECT [ID],[albumMID],[cardID],[name],[imageURL],[subtype],[supertype],[number],[artist],[rarity],[series],[setName],[setCode],[condition],[status],[loaded],[cardAdded],[cardEdited] FROM [dbo].[Cards3]", db);
+}
+
+void App::refreshCardsSQLModel(int albID)
+{
+    qDebug() << "Refreshing CardsSQLModel.";
+    this->cardsSQLModel->setQuery("SELECT [ID],[albumMID],[cardID],[name],[imageURL],[subtype],[supertype],[number],[artist],[rarity],[series],[setName],[setCode],[condition],[status],[loaded],[cardAdded],[cardEdited] FROM [dbo].[Cards3]", db);
+}
+
+void App::refreshCardsSQLModel()
+{
+    qDebug() << "Refreshing CardsSQLModel.";
+    this->cardsSQLModel->setQuery("SELECT [ID],[albumMID],[cardID],[name],[imageURL],[subtype],[supertype],[number],[artist],[rarity],[series],[setName],[setCode],[condition],[status],[loaded],[cardAdded],[cardEdited] FROM [dbo].[Cards3]", db);
+}
+
+void App::refreshAlbumsSQLModel()
+{
+    qDebug() << "Refreshing AlbumsSQLModel.";
+    this->albumsSQLModel->setQuery("SELECT [ID],[albumName],[albumAdded],[albumEdited] FROM [dbo].[Albums2]",db);
+}
+
+void App::currentAlbumChanged(int albID)
+{
+    this->currentAlbumID = albID;
+}
+
+void App::currentCardChanged(int crdID)
+{
+    this->currentCardID = crdID;
 }
 
 void App::dataFromNetwork(QByteArray data)

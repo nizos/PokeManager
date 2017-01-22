@@ -6,27 +6,24 @@ Item {
     height: 30
     clip: true
     anchors.margins: 4
-    Row {
-        anchors.margins: 4
-        anchors.fill: parent
-        spacing: 4;
-        Text {
-            text: model.cardMID
-        }
-        Text {
-            text: model.albumMID
-        }
-        Text {
-            text: model.imageURL
-        }
-        Text {
-            text: model.artist
-        }
-        Text {
-            text: model.name
-        }
-        Text {
-            text: model.rarity
-        }
-    }
+//    Row {
+//        anchors.margins: 4
+//        anchors.fill: parent
+//        spacing: 4;
+//        Text {
+//            text: model.ID
+//        }
+//        Text {
+//            text: model.albumMID
+//        }
+//        Text {
+//            text: model.artist
+//        }
+//        Text {
+//            text: model.name
+//        }
+//        Text {
+//            text: model.rarity
+//        }
+//    }
 }

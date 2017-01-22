@@ -26,11 +26,14 @@ public:
     QImage requestImage(const QString & id, QSize * size, const QSize & requestedSize);
 //    void setCardsSqlModel(CardsSQLModel* cardsSQLModel);
     void setSQLDatabase(QSqlDatabase* db);
+//    void addCardImage(QString imageURL, int crdID, int albID);
 
 signals:
     void cardAdded(QString imageURL);
     void cardUpdated(QString imageURL);
+    void cardRemoved(QString imageURL);
     void mapped(QString imageURL);
+//    void cardImageAdded(int albID, int crdID);
 
 public slots:
     void mappedReply(QString);

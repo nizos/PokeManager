@@ -30,8 +30,7 @@
 
 
 
-CardsSQLModel::CardsSQLModel(QObject *parent) :
-    QSqlQueryModel(parent)
+CardsSQLModel::CardsSQLModel(QObject *parent) : QSqlQueryModel(parent)
 {
 }
 
@@ -120,4 +119,20 @@ QVariant CardsSQLModel::data(const QModelIndex &index, int role) const
 //    this->setQuery(SQL_SELECT);
 //}
 
+//void CardsSQLModel::cardAdded(QString imageURL)
+//{
+//    QSqlQueryModel::setQuery(query);
+//    generateRoleNames();
+//}
 
+//void CardsSQLModel::cardRemoved(QString imageURL)
+//{
+//    QSqlQueryModel::setQuery(query);
+//    generateRoleNames();
+//}
+
+//void CardsSQLModel::cardUpdated(QString imageURL)
+//{
+//    QSqlQueryModel::setQuery(query);
+//    generateRoleNames();
+//}

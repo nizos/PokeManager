@@ -6,7 +6,7 @@ import PokeApp.Classes.Core 1.0
 Rectangle {
     id: appWindow
     property int indexC: 0
-    property int currentAlbum: 1001
+    property int currentAlbum: 1
     signal message(int indexC)
     width: parent.width
     height: parent.height

@@ -10,15 +10,15 @@ Item {
         height: 500
         anchors.fill: parent
 
-        ListView {
-            id: list_view1
-//            x: 125
-//            y: 100
-            width: parent.width
-            height: parent.height
-            delegate: CardsItemDelegate {}
-            model: cardsSQLModel
-        }
+//        ListView {
+//            id: list_view1
+////            x: 125
+////            y: 100
+//            width: parent.width
+//            height: parent.height
+//            delegate: CardsItemDelegate {}
+//            model: cardsSQLModel
+//        }
 
 
 
