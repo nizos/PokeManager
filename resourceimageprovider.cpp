@@ -25,9 +25,17 @@ void ResourceImageProvider::setSQLDatabase(QSqlDatabase* db)
 
 QImage ResourceImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
+    if(id == ":/gui/GUI/emptyCard.png")
+    {
+        // return temporary image place holder
+        QPixmap tempPixmap;
+        tempPixmap.load(":/gui/GUI/emptyCard.png");
+        QImage temp;
+        temp = tempPixmap.toImage();
+        return temp;
+    }
     // Check for image in database
-    QString addQuote = "'" + id + "'";
-    QString qslSelect = "SELECT * FROM CardImages2 WHERE imageURL=:imageURL";
+    QString qslSelect = "SELECT * FROM CardImages3 WHERE imageURL=:imageURL";
     QSqlQuery findCard;
     findCard.prepare(qslSelect);
     findCard.bindValue(":imageURL",id);
@@ -42,8 +50,6 @@ QImage ResourceImageProvider::requestImage(const QString &id, QSize *size, const
             outPixmap.loadFromData( outByteArray );
             QImage cardImage;
             cardImage = outPixmap.toImage();
-//            cardImage.scaledToHeight(size->height());
-//            cardImage.scaledToWidth(size->width());
             return cardImage;
         }
         else
@@ -63,9 +69,6 @@ QImage ResourceImageProvider::requestImage(const QString &id, QSize *size, const
             tempPixmap.load(":/gui/GUI/emptyCard.png");
             QImage temp;
             temp = tempPixmap.toImage();
-//            temp.scaledToHeight(size->height());
-//            temp.scaledToWidth(size->width());
-//            emit cardAdded(id);
             return temp;
         }
     }
@@ -77,9 +80,6 @@ QImage ResourceImageProvider::requestImage(const QString &id, QSize *size, const
         tempPixmap.load(":/gui/GUI/emptyCard.png");
         QImage temp;
         temp = tempPixmap.toImage();
-//        temp.scaledToHeight(size->height());
-//        temp.scaledToWidth(size->width());
-//        emit cardAdded(id);
         return temp;
     }
 }
@@ -102,32 +102,20 @@ void ResourceImageProvider::mappedReply(QString id)
     QNetworkReply *reply = m_replies.take(id);
     const QByteArray data = reply->readAll();
 
-
-
-
     QImage img;
     if(img.loadFromData(data,"PNG"))
     {
         qDebug() << "Image loaded";
-        // Insert image into database
-        QString addQuote = "'" + id + "'";
-        QString qslUpdate = "UPDATE CardImages2 SET imageData=:imageData WHERE imageURL=:imageURL";
+        QString insertImage = "INSERT INTO CardImages3 ([imageURL],[imageData]) VALUES(:imageURL,:imageData)";
         QSqlQuery updateCard;
-        updateCard.prepare(qslUpdate);
-        updateCard.bindValue(":imageData",img);
+        updateCard.prepare(insertImage);
         updateCard.bindValue(":imageURL",id);
+        updateCard.bindValue(":imageData",data);
         if(updateCard.exec())
         {
-//            if(reply->property("crdID").isValid())
-//            {
-//                qDebug() << "Requested Card Image Added.";
-//                emit cardImageAdded(reply->property("albID").toInt(), reply->property("crdID").toInt());
-//            }
-//            else
-//            {
-                emit cardUpdated(id);
-                qDebug() << "Card Image Added.";
-//            }
+            emit cardUpdated(id);
+            qDebug() << "Card Image Added.";
+
         }
         else
         {

@@ -20,12 +20,12 @@ void CardsSQLManager::setResourceImageProvider(ResourceImageProvider* resourceIm
 void CardsSQLManager::addCard(int albID, QString crdReq)
 {
     int crdID;
-    QString insertCardCommand = "INSERT INTO [dbo].[Cards3]([albumMID],[loaded],[cardAdded],[cardEdited]) VALUES(:albumMID,:loaded,:cardAdded,:cardEdited)";
+    QString insertCardCommand = "INSERT INTO [dbo].[Cards3]([albumMID],[imageURL],[loaded],[cardAdded],[cardEdited]) VALUES(:albumMID,:imageURL,:loaded,:cardAdded,:cardEdited)";
 
     QSqlQuery qryCard;
     qryCard.prepare(insertCardCommand);
     qryCard.bindValue(":albumMID",albID);
-//    qryCard.bindValue(":imageURL", ":/gui/GUI/emptyCard.png");
+    qryCard.bindValue(":imageURL", ":/gui/GUI/emptyCard.png");
     qryCard.bindValue(":loaded",false);
     qryCard.bindValue(":cardAdded",QDateTime::currentDateTime());
     qryCard.bindValue(":cardEdited",QDateTime::currentDateTime());
@@ -153,7 +153,7 @@ void CardsSQLManager::mappedReply(int crdID)
         // Update  Album last edited
         qDebug() << "Card 1 Inserted into Cards!";
 //        this->resourceImageProvider->addCardImage(cardRootValues.value("imageUrl").toString(), crdID,albID);
-        emit cardUpdated(albID,crdID);
+//        emit cardUpdated(albID,crdID);
 
         QString updateAlbum = "UPDATE Albums2 SET albumEdited=:albumEdited WHERE ID=:albID";
         QSqlQuery qryAlbum;
